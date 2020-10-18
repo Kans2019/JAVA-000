@@ -6,3 +6,4 @@
 javac LoadClassDemo.java
 java LoadClassDemo
 ```
+* ![JVM参数](./JMM.png)
