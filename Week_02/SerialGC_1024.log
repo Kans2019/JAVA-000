@@ -1,0 +1,21 @@
+正在执行...
+[GC (Allocation Failure) [DefNew: 279616K->34943K(314560K), 0.0535437 secs] 279616K->93211K(1013632K), 0.0536045 secs] [Times: user=0.03 sys=0.03, real=0.05 secs] 
+[GC (Allocation Failure) [DefNew: 314559K->34943K(314560K), 0.0611511 secs] 372827K->170324K(1013632K), 0.0612019 secs] [Times: user=0.03 sys=0.02, real=0.07 secs] 
+[GC (Allocation Failure) [DefNew: 314559K->34943K(314560K), 0.0428140 secs] 449940K->236422K(1013632K), 0.0428655 secs] [Times: user=0.03 sys=0.02, real=0.05 secs] 
+[GC (Allocation Failure) [DefNew: 314559K->34943K(314560K), 0.0477380 secs] 516038K->321327K(1013632K), 0.0477794 secs] [Times: user=0.03 sys=0.02, real=0.05 secs] 
+[GC (Allocation Failure) [DefNew: 314559K->34943K(314560K), 0.0532450 secs] 600943K->408400K(1013632K), 0.0532995 secs] [Times: user=0.03 sys=0.02, real=0.06 secs] 
+[GC (Allocation Failure) [DefNew: 314559K->34943K(314560K), 0.0419043 secs] 688016K->484206K(1013632K), 0.0419604 secs] [Times: user=0.03 sys=0.01, real=0.05 secs] 
+[GC (Allocation Failure) [DefNew: 314559K->34943K(314560K), 0.0496874 secs] 763822K->571265K(1013632K), 0.0497357 secs] [Times: user=0.03 sys=0.02, real=0.04 secs] 
+[GC (Allocation Failure) [DefNew: 314559K->34943K(314560K), 0.0596163 secs] 850881K->650708K(1013632K), 0.0596611 secs] [Times: user=0.04 sys=0.03, real=0.06 secs] 
+[GC (Allocation Failure) [DefNew: 314559K->314559K(314560K), 0.0000287 secs][Tenured: 615764K->380561K(699072K), 0.0811102 secs] 930324K->380561K(1013632K), [Metaspace: 2706K->2706K(1056768K)], 0.0812078 secs] [Times: user=0.08 sys=0.00, real=0.08 secs] 
+[GC (Allocation Failure) [DefNew: 279616K->34943K(314560K), 0.0181915 secs] 660177K->472629K(1013632K), 0.0182367 secs] [Times: user=0.02 sys=0.00, real=0.02 secs] 
+执行结束!共生成对象次数:10517
+Heap
+ def new generation   total 314560K, used 46299K [0x0000000780000000, 0x0000000795550000, 0x0000000795550000)
+  eden space 279616K,   4% used [0x0000000780000000, 0x0000000780b16c78, 0x0000000791110000)
+  from space 34944K,  99% used [0x0000000793330000, 0x000000079554fff8, 0x0000000795550000)
+  to   space 34944K,   0% used [0x0000000791110000, 0x0000000791110000, 0x0000000793330000)
+ tenured generation   total 699072K, used 437685K [0x0000000795550000, 0x00000007c0000000, 0x00000007c0000000)
+   the space 699072K,  62% used [0x0000000795550000, 0x00000007b00bd690, 0x00000007b00bd800, 0x00000007c0000000)
+ Metaspace       used 2712K, capacity 4486K, committed 4864K, reserved 1056768K
+  class space    used 295K, capacity 386K, committed 512K, reserved 1048576K

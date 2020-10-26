@@ -1,0 +1,18 @@
+正在执行...
+[GC (Allocation Failure) [ParNew: 559232K->69887K(629120K), 0.0567407 secs] 559232K->164622K(2027264K), 0.0567942 secs] [Times: user=0.11 sys=0.36, real=0.06 secs] 
+[GC (Allocation Failure) [ParNew: 629119K->69886K(629120K), 0.0562014 secs] 723854K->283767K(2027264K), 0.0562487 secs] [Times: user=0.10 sys=0.35, real=0.06 secs] 
+[GC (Allocation Failure) [ParNew: 629118K->69888K(629120K), 0.0653942 secs] 842999K->409450K(2027264K), 0.0654399 secs] [Times: user=0.61 sys=0.03, real=0.07 secs] 
+[GC (Allocation Failure) [ParNew: 629120K->69888K(629120K), 0.0678592 secs] 968682K->526829K(2027264K), 0.0679090 secs] [Times: user=0.60 sys=0.04, real=0.06 secs] 
+[GC (Allocation Failure) [ParNew: 629120K->69888K(629120K), 0.0902147 secs] 1086061K->659927K(2027264K), 0.0902738 secs] [Times: user=0.70 sys=0.05, real=0.09 secs] 
+[GC (Allocation Failure) [ParNew: 629120K->69888K(629120K), 0.0775513 secs] 1219159K->793169K(2027264K), 0.0776349 secs] [Times: user=0.72 sys=0.05, real=0.08 secs] 
+[GC (CMS Initial Mark) [1 CMS-initial-mark: 723281K(1398144K)] 793843K(2027264K), 0.0002197 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[CMS-concurrent-mark-start]
+执行结束!共生成对象次数:12656
+Heap
+ par new generation   total 629120K, used 92832K [0x0000000740000000, 0x000000076aaa0000, 0x000000076aaa0000)
+  eden space 559232K,   4% used [0x0000000740000000, 0x0000000741668298, 0x0000000762220000)
+  from space 69888K, 100% used [0x0000000762220000, 0x0000000766660000, 0x0000000766660000)
+  to   space 69888K,   0% used [0x0000000766660000, 0x0000000766660000, 0x000000076aaa0000)
+ concurrent mark-sweep generation total 1398144K, used 723281K [0x000000076aaa0000, 0x00000007c0000000, 0x00000007c0000000)
+ Metaspace       used 2712K, capacity 4486K, committed 4864K, reserved 1056768K
+  class space    used 295K, capacity 386K, committed 512K, reserved 1048576K
