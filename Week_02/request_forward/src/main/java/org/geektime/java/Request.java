@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -57,6 +59,11 @@ public class Request<T extends Serializable> {
      * 只针对于HTTP的请求方法
      */
     private HttpMethod method;
+
+    /**
+     * 请求头
+     */
+    private Map<String, String> headers = new HashMap<>();
 
     public String getUri() {
         StringBuilder sb = new StringBuilder();
@@ -136,6 +143,15 @@ public class Request<T extends Serializable> {
 
     public void setMethod(HttpMethod method) {
         this.method = method;
+    }
+
+    public Request<T> addHeader(String name, String value) {
+        headers.put(name, value);
+        return this;
+    }
+
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 
     /**

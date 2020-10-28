@@ -63,34 +63,38 @@ public class AddressUtils {
                 sb.delete(0, sb.length());
             }
         }
-        if (flag) {
-            // IPv6
-            if (sb.length() == 0) {
-                buf[index++] = buf[index++] = 0;
-            } else {
-                int value = Integer.parseInt(sb.toString(), 16);
-                buf[index++] = (byte) (value >>> 8);
-                buf[index++] = (byte) value;
-            }
 
-        } else {
-            if (sb.length() == 0) {
-                buf[index++] = 0;
+        try {
+            if (flag) {
+                // IPv6
+                if (sb.length() == 0) {
+                    buf[index++] = buf[index++] = 0;
+                } else {
+                    int value = Integer.parseInt(sb.toString(), 16);
+                    buf[index++] = (byte) (value >>> 8);
+                    buf[index++] = (byte) value;
+                }
+
             } else {
-                // IPv4
-                int value = 256;
-                try {
-                    value = Integer.parseInt(sb.toString());
-                } catch (NumberFormatException e) {
-                    value = Integer.parseInt(sb.toString(), 16);
+                if (sb.length() == 0) {
+                    buf[index++] = 0;
+                } else {
+                    // IPv4
+                    int value = 256;
+                    try {
+                        value = Integer.parseInt(sb.toString());
+                    } catch (NumberFormatException e) {
+                        value = Integer.parseInt(sb.toString(), 16);
+                    }
+                    if (value > 255) {
+                        throw new IllegalArgumentException("Invalid IP Address " + address);
+                    }
+                    buf[index++] = (byte) value;
                 }
-                if (value > 255) {
-                    throw new IllegalArgumentException("Invalid IP Address " + address);
-                }
-                buf[index++] = (byte) value;
             }
+            return InetAddress.getByAddress(Arrays.copyOf(buf, index));
+        } catch (UnknownHostException | NumberFormatException e) {
+            return InetAddress.getByName(address);
         }
-
-        return InetAddress.getByAddress(Arrays.copyOf(buf, index));
     }
 }
