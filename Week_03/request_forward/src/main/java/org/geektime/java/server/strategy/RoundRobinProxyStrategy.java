@@ -15,7 +15,7 @@ public class RoundRobinProxyStrategy implements ProxyStrategy {
 
     @Override
     public Proxy getNext(List<Proxy> collection) {
-        if (atomicInteger.get() > collection.size()) {
+        if (atomicInteger.get() >= collection.size()) {
             atomicInteger.set(0);
         }
         return collection.get(atomicInteger.getAndIncrement());
