@@ -1,0 +1,9 @@
+<proxies>
+    <proxy prefix="nio01" strategy="weight">
+        <host weight="10">127.0.0.1:8080</host>
+        <host weight="20">127.0.0.1:8801</host>
+    </proxy>
+    <proxy prefix="nio02" strategy="random">
+        <host>127.0.0.1:8080</host>
+    </proxy>
+</proxies>

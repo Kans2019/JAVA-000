@@ -1,10 +1,16 @@
 package org.geektime.java.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.http.entity.ContentType;
+import org.apache.http.protocol.HTTP;
 import org.geektime.java.Request;
 import org.geektime.java.RequestForward;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +20,7 @@ public class HttpClientRequestForwardTest {
 
     private RequestForward requestForward = new HttpClientRequestForward();
 
-    @org.junit.Test
+//    @org.junit.Test
     public void sendRequest8808() throws UnknownHostException {
         Request<String> request = new Request<String>("localhost", "HTTP");
         request.setUri("/test");
@@ -27,7 +33,7 @@ public class HttpClientRequestForwardTest {
 
     private ExecutorService executor = Executors.newFixedThreadPool(16);
 
-    @org.junit.Test
+//    @org.junit.Test
     public void sendRequest8801() throws Throwable {
         Runnable runnable = () -> {
             try {

@@ -9,17 +9,22 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.SerializableEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
+import org.apache.http.protocol.HTTP;
 import org.geektime.java.Request;
 import org.geektime.java.RequestForward;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
@@ -86,9 +91,23 @@ public class HttpClientRequestForward implements RequestForward, Closeable {
         return new byte[0];
     }
 
+    /**
+     * 默认的 Content-Type
+     */
+    private static final ContentType DEFAULT_CONTENT_TYPE = ContentType.create("text/plain", Charset.defaultCharset());
 
-    private HttpUriRequest resolve(Request request) {
-        HttpEntity entity = new ByteArrayEntity(request.serializeData());
+
+    private HttpUriRequest resolve(Request<Serializable> request) {
+        HttpEntity entity = null;
+        if (request != null && Objects.nonNull(request.getData())) {
+            if (request.getData() instanceof String) {
+                entity = new StringEntity(String.valueOf(request.getData()),
+                        ContentType.parse(request.getHeaders().getOrDefault(HTTP.CONTENT_TYPE, DEFAULT_CONTENT_TYPE.toString())));
+            } else {
+                entity = new SerializableEntity(request.getData());
+            }
+        }
+
         BasicHttpEntityEnclosingRequest httpRequest = new BasicHttpEntityEnclosingRequest(request.getMethod().getMethod(), request.getUri(), this.resolve(request.getProtocol()));
         httpRequest.setEntity(entity);
         RequestBuilder requestBuilder = RequestBuilder.copy(httpRequest);

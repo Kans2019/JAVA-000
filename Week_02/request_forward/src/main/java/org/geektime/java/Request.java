@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -27,6 +28,19 @@ public class Request<T extends Serializable> {
 
     public Request(String address, String protocol) throws UnknownHostException {
         this(AddressUtils.resolve(address), Protocol.valueOf(protocol));
+    }
+
+    public Request(String url, HttpMethod method) throws UnknownHostException {
+        this.setMethod(method);
+        URI uri = URI.create(url);
+        this.protocol = Protocol.resolve(uri.getScheme()).orElseThrow(() -> new IllegalArgumentException("不存在的协议名称 " + uri.getScheme()));
+        this.setPort(uri.getPort());
+        this.address = AddressUtils.resolve(uri.getHost());
+        this.setUri(uri.getPath());
+    }
+
+    public Request(String url) throws UnknownHostException {
+        this(url, HttpMethod.GET);
     }
 
 
