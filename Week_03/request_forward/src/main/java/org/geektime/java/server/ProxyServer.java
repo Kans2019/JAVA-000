@@ -13,6 +13,7 @@ import io.netty.handler.codec.http.HttpServerExpectContinueHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.geektime.java.client.impl.HttpClientRequestForward;
+import org.geektime.java.client.impl.OkHttpRequestForward;
 import org.geektime.java.server.filter.FilterHandler;
 
 /**
@@ -47,7 +48,7 @@ public class ProxyServer {
                             p.addLast(new HttpServerExpectContinueHandler());
                             p.addLast(new HttpObjectAggregator(1024 * 1024));
                             p.addLast(new FilterHandler());
-                            p.addLast(new ProxyHandler(new HttpClientRequestForward()));
+                            p.addLast(new ProxyHandler(new OkHttpRequestForward()));
                         }
                     });
 

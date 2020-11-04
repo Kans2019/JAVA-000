@@ -1,6 +1,7 @@
 package org.geektime.java.client.impl;
 
 import okhttp3.*;
+import okhttp3.internal.http.HttpMethod;
 import okio.BufferedSink;
 import org.apache.http.protocol.HTTP;
 import org.geektime.java.client.RequestForward;
@@ -86,7 +87,7 @@ public class OkHttpRequestForward implements RequestForward<Serializable> {
         }
 
 
-        return builder.method(request.getMethod().getMethod(), body).build();
+        return builder.method(request.getMethod().getMethod(), HttpMethod.permitsRequestBody(request.getMethod().getMethod()) ? body : null).build();
     }
 
     @Override

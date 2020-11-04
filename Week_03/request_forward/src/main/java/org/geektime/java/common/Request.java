@@ -41,6 +41,7 @@ public class Request<T extends Serializable> {
         this.address = AddressUtils.resolve(address[0]);
         this.setMethod(HttpMethod.resolve(request.method()));
         this.setUri(request.uri());
+        request.headers().forEach(header -> this.headers.put(header.getKey(), header.getValue()));
     }
 
     public Request(String url, HttpMethod method) throws UnknownHostException {
@@ -234,7 +235,7 @@ public class Request<T extends Serializable> {
         }
 
         public static Optional<Protocol> resolve(String pro) {
-            String[] names = pro.split("\\W+");
+            String[] names = pro.split("[\\W\\_]+");
             Optional<Protocol> result = Optional.empty();
             for (Protocol protocol : values()) {
                 boolean flag = true;
@@ -244,7 +245,7 @@ public class Request<T extends Serializable> {
                     case 2:
                         flag = flag && Integer.parseInt(names[1]) == protocol.getMajor();
                     case 1:
-                        flag = flag && Objects.equals(protocol.getName(), names[0]);
+                        flag = flag && protocol.getName().equalsIgnoreCase(names[0]);
                         break;
                     default:
                         throw new EnumConstantNotPresentException(Protocol.class, pro);
