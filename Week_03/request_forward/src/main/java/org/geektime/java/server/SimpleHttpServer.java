@@ -12,25 +12,29 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.HttpServerExpectContinueHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.geektime.java.client.impl.HttpClientRequestForward;
-import org.geektime.java.server.filter.FilterHandler;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.geektime.java.common.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * @author Terrdi
  * @description
- * @date 2020/11/3
+ * @date 2020/11/4
  */
-public class ProxyServer {
+public class SimpleHttpServer extends Thread {
     /**
      * 监听的端口
      */
     private final int port;
 
-    public ProxyServer(int port) {
+    public SimpleHttpServer(int port) {
         this.port = port;
     }
 
-    public void start() {
+    public void run() {
         // Configure the server.
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -46,8 +50,7 @@ public class ProxyServer {
                             p.addLast(new HttpServerCodec());
                             p.addLast(new HttpServerExpectContinueHandler());
                             p.addLast(new HttpObjectAggregator(1024 * 1024));
-                            p.addLast(new FilterHandler());
-                            p.addLast(new ProxyHandler(new HttpClientRequestForward()));
+                            p.addLast(new SimpleHttpServerHandler(port, Constant.NAME_HEADER));
                         }
                     });
 
@@ -65,8 +68,17 @@ public class ProxyServer {
         }
     }
 
-    public static void main(String[] args) {
-        ProxyServer proxyServer = new ProxyServer(8089);
-        proxyServer.start();
+    public static void main(String[] args) throws InterruptedException {
+        ExecutorService executors = new ThreadPoolExecutor(5, 100,
+                60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100),
+                new BasicThreadFactory.Builder().namingPattern("server-%d")
+                .daemon(true).build());
+        List<SimpleHttpServer> list = new ArrayList<>();
+        for (int i = 8080; i < 8085; i++) {
+            list.add(new SimpleHttpServer(i));
+        }
+        list.forEach(executors::execute);
+
+        executors.awaitTermination(1, TimeUnit.HOURS);
     }
 }

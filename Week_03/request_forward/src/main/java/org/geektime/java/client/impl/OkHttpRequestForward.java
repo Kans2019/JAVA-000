@@ -16,7 +16,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @description
  * @date 2020/10/28
  */
-public class OkHttpRequestForward<T extends Serializable> implements RequestForward<T, Response> {
+public class OkHttpRequestForward implements RequestForward<Serializable> {
     private Queue<OkHttpClient> queue;
 
     /**
@@ -42,7 +42,7 @@ public class OkHttpRequestForward<T extends Serializable> implements RequestForw
 
 
     @Override
-    public byte[] sendRequest(org.geektime.java.client.Request<T> request) {
+    public byte[] sendRequest(org.geektime.java.common.Request<Serializable> request) {
         OkHttpClient client = this.queue.poll();
         try (Response response = client.newCall(this.resolve(request)).execute()) {
             return response.body().bytes();
@@ -55,11 +55,19 @@ public class OkHttpRequestForward<T extends Serializable> implements RequestForw
     }
 
     @Override
-    public org.geektime.java.client.Response<Response> sendRequestAndResponse(org.geektime.java.client.Request<T> request) {
-        throw new UnsupportedOperationException();
+    public org.geektime.java.common.Response sendRequestAndResponse(org.geektime.java.common.Request<Serializable> request) {
+        OkHttpClient client = this.queue.poll();
+        try (Response response = client.newCall(this.resolve(request)).execute()) {
+            return new org.geektime.java.common.Response(response);
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+        } finally {
+            this.queue.offer(client);
+        }
+        return null;
     }
 
-    private Request resolve(org.geektime.java.client.Request request) {
+    private Request resolve(org.geektime.java.common.Request request) {
         Request.Builder builder = new Request.Builder().url(request.getUri());
         RequestBody body = new RequestBody() {
             @Override

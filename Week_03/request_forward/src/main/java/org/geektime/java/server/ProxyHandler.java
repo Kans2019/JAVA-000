@@ -4,15 +4,14 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
-import org.apache.http.Header;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.util.EntityUtils;
-import org.geektime.java.client.Request;
+import org.geektime.java.common.Request;
 import org.geektime.java.client.RequestForward;
+import org.geektime.java.common.Response;
 import org.geektime.java.server.strategy.ProxyStrategy;
 import org.geektime.java.util.ProxyResolveUtils;
 
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -32,35 +31,23 @@ public class ProxyHandler extends SimpleChannelInboundHandler<HttpObject> {
         if (msg instanceof HttpRequest) {
             HttpRequest request = (HttpRequest) msg;
             String uri = request.uri();
-            Map<String, ProxyGroup> proxyGroupMap = ProxyResolveUtils.proxyTable;
-            boolean flag = true;
-            for (String key : proxyGroupMap.keySet()) {
-                if (uri.startsWith(key) || uri.startsWith("/" + key)){
-                    ProxyGroup proxyGroup = proxyGroupMap.get(key);
-                    Proxy proxy = ProxyStrategy.strategyTable.get(proxyGroup.getStrategy()).getNext(proxyGroup.getCollection());
-                    request.headers().set(HttpHeaderNames.HOST, proxy.getUrl());
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag) {
+            Proxy proxy = resolve(uri);
+            if (Objects.isNull(proxy)) {
                 ctx.writeAndFlush(
                         new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND, Unpooled.wrappedBuffer("Not Found".getBytes())));
                 return;
             }
+            request.headers().set(HttpHeaderNames.HOST, proxy.getHost());
+            int index = uri.indexOf(proxy.getPrefix()) + proxy.getPrefix().length();
+            uri = uri.substring(index);
+            if (!uri.startsWith("/")) {
+                uri = "/" + uri;
+            }
+            request.setUri(uri);
             System.out.println(request);
             Request<?> request1 = new Request<>(request);
-            CloseableHttpResponse response = (CloseableHttpResponse) requestForward.sendRequestAndResponse(request1).getResponse();
-            byte[] body = EntityUtils.toByteArray(response.getEntity());
-            FullHttpResponse result =
-                    new DefaultFullHttpResponse(HttpVersion.valueOf(response.getProtocolVersion().toString()),
-                            HttpResponseStatus.valueOf(response.getStatusLine().getStatusCode(), response.getStatusLine().getReasonPhrase()),
-                            Unpooled.wrappedBuffer(body));
-            for (Header header : response.getAllHeaders()) {
-                result.headers().add(header.getName(), header.getValue());
-            }
-
-            System.out.println(result.toString());
+            Response response = requestForward.sendRequestAndResponse(request1);
+            FullHttpResponse result = parse(response);
 
             ctx.writeAndFlush(result);
         }
@@ -75,5 +62,25 @@ public class ProxyHandler extends SimpleChannelInboundHandler<HttpObject> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.close();
+    }
+
+    private static FullHttpResponse parse(Response response) {
+        final FullHttpResponse httpResponse =
+                new DefaultFullHttpResponse(HttpVersion.valueOf(response.getProtocol().toString()),
+                        HttpResponseStatus.valueOf(response.getStatusCode(), response.getReasonPhrase()),
+                        Unpooled.wrappedBuffer(response.getContent()));
+        response.getHeaders().forEach((k, v) -> httpResponse.headers().add(String.valueOf(k), v));
+        return httpResponse;
+    }
+
+    private static Proxy resolve(String uri) {
+        Map<String, ProxyGroup> proxyGroupMap = ProxyResolveUtils.proxyTable;
+        for (String key : proxyGroupMap.keySet()) {
+            if (uri.startsWith(key) || uri.startsWith("/" + key)){
+                ProxyGroup proxyGroup = proxyGroupMap.get(key);
+                return ProxyStrategy.strategyTable.get(proxyGroup.getStrategy()).getNext(proxyGroup.getCollection());
+            }
+        }
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package org.geektime.java.client.common;
+package org.geektime.java.common;
 
 /**
  * @author Terrdi
@@ -8,5 +8,7 @@ package org.geektime.java.client.common;
 public interface Constant {
     String PROXY_XML = "proxy.xml";
 
-    String NETTY_RESPONSE = "ServerData";
+    String FILTER_XML = "filters.xml";
+
+    String NAME_HEADER = "nio";
 }

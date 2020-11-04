@@ -4,12 +4,11 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
-import org.geektime.java.client.Request;
+import org.geektime.java.common.Request;
 import org.geektime.java.client.RequestForward;
-import org.geektime.java.client.Response;
+import org.geektime.java.common.Response;
 import org.geektime.java.client.impl.netty.handler.HttpInBoundHandler;
 
 import java.io.IOException;
@@ -21,7 +20,7 @@ import java.util.Objects;
  * @description
  * @date 2020/11/3
  */
-public class NettyRequestForward<T extends Serializable> implements RequestForward<T, FullHttpResponse> {
+public class NettyRequestForward<T extends Serializable> implements RequestForward<T> {
     private EventLoopGroup group = new NioEventLoopGroup();
 
     @Override

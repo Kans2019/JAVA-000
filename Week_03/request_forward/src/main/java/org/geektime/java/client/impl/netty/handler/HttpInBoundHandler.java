@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http.*;
-import org.geektime.java.client.Request;
+import org.geektime.java.common.Request;
 import org.geektime.java.util.SerialUtils;
 
 import java.io.Serializable;

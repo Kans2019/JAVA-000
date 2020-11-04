@@ -1,1 +1,21 @@
-学习笔记
+# 作业说明
+1. 动态返回信息
+    * [Server](./request_forward/src/main/java/org/geektime/java/server/SimpleHttpServer.java)
+    * [Handler](./request_forward/src/main/java/org/geektime/java/server/SimpleHttpServerHandler.java)
+2. netty实现的客户端
+    * [接口](./request_forward/src/main/java/org/geektime/java/client/RequestForward.java)
+    * [实现](./request_forward/src/main/java/org/geektime/java/client/impl/NettyRequestForward.java)
+3. filter增强
+    * [xml](./request_forward/src/main/resources/filters.xml)
+    * [解析工具类](./request_forward/src/main/java/org/geektime/java/util/FilterResolveUtils.java)
+    * [NameFilter](./request_forward/src/main/java/org/geektime/java/server/filter/NameFilter.java)
+    * [调用filter的Handler](./request_forward/src/main/java/org/geektime/java/server/filter/FilterHandler.java)
+4. 负载均衡解析
+    * [xml](./request_forward/src/main/resources/proxy.xml)
+    * [解析工具类](./request_forward/src/main/java/org/geektime/java/util/ProxyResolveUtils.java)
+    * [负载均衡策略接口](./request_forward/src/main/java/org/geektime/java/server/strategy/ProxyStrategy.java)
+    * [随机策略实现](./request_forward/src/main/java/org/geektime/java/server/strategy/RandomProxyStrategy.java)
+    * [轮询策略(RoundRobin)实现](./request_forward/src/main/java/org/geektime/java/server/strategy/RoundRobinProxyStrategy.java)
+    * [权重策略实现](./request_forward/src/main/java/org/geektime/java/server/strategy/WeightProxyStrategy.java)
+    * [调用Handler](./request_forward/src/main/java/org/geektime/java/server/ProxyHandler.java)
+    * [Server](./request_forward/src/main/java/org/geektime/java/server/ProxyServer.java)

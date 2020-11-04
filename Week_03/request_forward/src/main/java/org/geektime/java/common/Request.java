@@ -1,8 +1,8 @@
-package org.geektime.java.client;
+package org.geektime.java.common;
 
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpVersion;
+import org.apache.http.ProtocolVersion;
 import org.geektime.java.util.AddressUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -233,10 +233,45 @@ public class Request<T extends Serializable> {
             this.minor = minor;
         }
 
+        public static Optional<Protocol> resolve(String pro) {
+            String[] names = pro.split("\\W+");
+            Optional<Protocol> result = Optional.empty();
+            for (Protocol protocol : values()) {
+                boolean flag = true;
+                switch (names.length) {
+                    case 3:
+                        flag = flag && Integer.parseInt(names[2]) == protocol.getMinor();
+                    case 2:
+                        flag = flag && Integer.parseInt(names[1]) == protocol.getMajor();
+                    case 1:
+                        flag = flag && Objects.equals(protocol.getName(), names[0]);
+                        break;
+                    default:
+                        throw new EnumConstantNotPresentException(Protocol.class, pro);
+                }
+
+                if (flag) {
+                    result = Optional.of(protocol);
+                    break;
+                }
+            }
+            return result;
+        }
+
         public static Protocol resolve(HttpVersion protocolVersion) {
             for (Protocol protocol : values()) {
                 if (protocol.getName().equalsIgnoreCase(protocolVersion.protocolName()) &&
                     protocol.major == protocolVersion.majorVersion() && protocol.minor == protocolVersion.minorVersion()) {
+                    return protocol;
+                }
+            }
+            throw new EnumConstantNotPresentException(Protocol.class, protocolVersion.toString());
+        }
+
+        public static Protocol resolve(ProtocolVersion protocolVersion) {
+            for (Protocol protocol : values()) {
+                if (protocol.getName().equalsIgnoreCase(protocolVersion.getProtocol()) &&
+                        protocol.major == protocolVersion.getMajor() && protocol.minor == protocolVersion.getMinor()) {
                     return protocol;
                 }
             }
@@ -257,18 +292,6 @@ public class Request<T extends Serializable> {
 
         public int getMinor() {
             return minor;
-        }
-
-        public static Optional<Protocol> resolve(String protocol) {
-            Optional<Protocol> result = Optional.empty();
-            for (Protocol value : values()) {
-                if (value.name().equalsIgnoreCase(protocol) || value.getName().equalsIgnoreCase(protocol)) {
-                    result = Optional.of(value);
-                    break;
-                }
-            }
-
-            return result;
         }
 
         @Override

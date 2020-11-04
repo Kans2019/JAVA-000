@@ -1,5 +1,8 @@
 package org.geektime.java.client;
 
+import org.geektime.java.common.Request;
+import org.geektime.java.common.Response;
+
 import java.io.Closeable;
 import java.io.Serializable;
 
@@ -8,8 +11,8 @@ import java.io.Serializable;
  * @description
  * @date 2020/10/27
  */
-public interface RequestForward<T extends Serializable, R> extends Closeable {
+public interface RequestForward<T extends Serializable> extends Closeable {
     byte[] sendRequest(Request<T> request);
 
-    Response<R> sendRequestAndResponse(Request<T> request);
+    Response sendRequestAndResponse(Request<T> request);
 }

@@ -8,22 +8,29 @@ package org.geektime.java.server;
 public class Proxy {
     private final int weight;
 
-    private final String url;
+    private final String host;
 
-    public Proxy(int weight, String url) {
+    private final String prefix;
+
+    public Proxy(int weight, String url, String prefix) {
         this.weight = weight;
-        this.url = url;
+        this.host = url;
+        this.prefix = prefix;
     }
 
-    public Proxy(String url) {
-        this(0, url);
+    public Proxy(String url, String prefix) {
+        this(0, url, prefix);
     }
 
     public int getWeight() {
         return weight;
     }
 
-    public String getUrl() {
-        return url;
+    public String getHost() {
+        return host;
+    }
+
+    public String getPrefix() {
+        return prefix;
     }
 }

@@ -1,6 +1,6 @@
 package org.geektime.java.client.impl;
 
-import org.geektime.java.client.Request;
+import org.geektime.java.common.Request;
 import org.geektime.java.client.RequestForward;
 import org.junit.Assert;
 import org.junit.Test;

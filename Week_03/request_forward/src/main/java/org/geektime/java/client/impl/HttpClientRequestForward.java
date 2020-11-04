@@ -2,7 +2,6 @@ package org.geektime.java.client.impl;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.ProtocolVersion;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -18,9 +17,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.protocol.HTTP;
-import org.geektime.java.client.Request;
+import org.geektime.java.common.Request;
 import org.geektime.java.client.RequestForward;
-import org.geektime.java.client.Response;
+import org.geektime.java.common.Response;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -37,7 +36,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @description
  * @date 2020/10/27
  */
-public class HttpClientRequestForward implements RequestForward<Serializable, CloseableHttpResponse>, Closeable {
+public class HttpClientRequestForward implements RequestForward<Serializable>, Closeable {
     private static RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(3000)
             .setConnectionRequestTimeout(1000).setSocketTimeout(3000).setExpectContinueEnabled(false).build();
     private static PoolingHttpClientConnectionManager connectionManager =
@@ -94,10 +93,10 @@ public class HttpClientRequestForward implements RequestForward<Serializable, Cl
     }
 
     @Override
-    public Response<CloseableHttpResponse> sendRequestAndResponse(Request request) {
+    public Response sendRequestAndResponse(Request request) {
         CloseableHttpClient httpClient = this.queue.poll();
         try {
-            return new Response<>(httpClient.execute(resolve(request)));
+            return new Response(httpClient.execute(resolve(request)));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

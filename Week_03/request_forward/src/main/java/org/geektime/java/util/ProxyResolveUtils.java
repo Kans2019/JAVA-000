@@ -5,7 +5,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.geektime.java.client.common.Constant;
+import org.geektime.java.common.Constant;
 import org.geektime.java.server.Proxy;
 import org.geektime.java.server.ProxyGroup;
 
@@ -31,7 +31,7 @@ public class ProxyResolveUtils {
                 List<Element> list = element.elements("host");
                 List<Proxy> proxyGroups = new ArrayList<>(list.size());
                 for (Element e : list) {
-                    Proxy proxy = new Proxy(Integer.valueOf(e.attributeValue("weight", "0")), e.getTextTrim());
+                    Proxy proxy = new Proxy(Integer.valueOf(e.attributeValue("weight", "0")), e.getTextTrim(), prefix.getValue());
                     proxyGroups.add(proxy);
                 }
                 ProxyGroup group = new ProxyGroup(proxyGroups, element.attributeValue("strategy"));

@@ -1,7 +1,6 @@
 package org.geektime.java.client.impl;
 
-import io.netty.handler.codec.http.FullHttpResponse;
-import org.geektime.java.client.Request;
+import org.geektime.java.common.Request;
 import org.geektime.java.client.RequestForward;
 import org.junit.After;
 import org.junit.Assert;
@@ -11,7 +10,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 public class NettyRequestForwardTest {
-    private RequestForward<String, FullHttpResponse> requestForward = new NettyRequestForward<>();
+    private RequestForward<String> requestForward = new NettyRequestForward<>();
 
     @Test
     public void sendRequest() throws UnknownHostException {

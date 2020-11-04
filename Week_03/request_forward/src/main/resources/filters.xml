@@ -1,0 +1,3 @@
+<filters>
+    <filter>org.geektime.java.server.filter.NameFilter</filter>
+</filters>
