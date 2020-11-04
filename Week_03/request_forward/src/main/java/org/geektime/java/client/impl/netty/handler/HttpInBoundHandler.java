@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  * @author Terrdi
- * @description
+ * @description 辅助 {@link org.geektime.java.client.impl.NettyRequestForward} 实现同步发送http请求的handler
  * @date 2020/11/3
  */
 public class HttpInBoundHandler<T extends Serializable> extends ChannelInboundHandlerAdapter {

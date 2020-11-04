@@ -2,7 +2,7 @@ package org.geektime.java.server;
 
 /**
  * @author Terrdi
- * @description
+ * @description 代理服务器pojo 与 {@link org.geektime.java.common.Constant#PROXY_XML} 里的 host 一一对应
  * @date 2020/11/3
  */
 public class Proxy {

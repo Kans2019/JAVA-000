@@ -6,7 +6,7 @@ import org.geektime.java.common.Constant;
 
 /**
  * @author Terrdi
- * @description
+ * @description 增加文件头过滤器
  * @date 2020/11/4
  */
 public class NameFilter implements io.github.kimmking.gateway.filter.HttpRequestFilter {

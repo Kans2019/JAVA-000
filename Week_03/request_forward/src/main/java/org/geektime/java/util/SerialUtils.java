@@ -5,15 +5,14 @@ import java.util.logging.Logger;
 
 /**
  * @author Terrdi
- * @description 序列化相关接口
+ * @description jdk 自带序列化工具类
  * @date 2020/11/3
  */
 public class SerialUtils {
-    private static final Logger logger = Logger.getLogger("SerialUtils");
 
 
     private SerialUtils() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("工具类无法被初始化");
     }
 
     /**

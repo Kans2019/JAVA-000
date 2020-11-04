@@ -1,7 +1,6 @@
 package org.geektime.java.common;
 
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -14,7 +13,7 @@ import java.util.Map;
 
 /**
  * @author Terrdi
- * @description
+ * @description 返回包装类
  * @date 2020/11/4
  */
 public class Response {

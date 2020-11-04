@@ -14,7 +14,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @author Terrdi
- * @description
+ * @description 基于 OkHttp 来实现的发送请求类
  * @date 2020/10/28
  */
 public class OkHttpRequestForward implements RequestForward<Serializable> {

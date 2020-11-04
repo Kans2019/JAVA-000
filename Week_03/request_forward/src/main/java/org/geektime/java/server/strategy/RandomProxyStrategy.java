@@ -8,7 +8,7 @@ import java.util.Random;
 
 /**
  * @author Terrdi
- * @description
+ * @description 随机代理策略
  * @date 2020/11/3
  */
 public class RandomProxyStrategy implements ProxyStrategy {

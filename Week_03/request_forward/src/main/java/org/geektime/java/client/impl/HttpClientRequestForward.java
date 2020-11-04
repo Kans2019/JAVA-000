@@ -33,7 +33,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @author Terrdi
- * @description
+ * @description 基于 HttpClient 来实现的发送请求类
  * @date 2020/10/27
  */
 public class HttpClientRequestForward implements RequestForward<Serializable>, Closeable {

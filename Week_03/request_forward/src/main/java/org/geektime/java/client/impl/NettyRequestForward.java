@@ -17,8 +17,9 @@ import java.util.Objects;
 
 /**
  * @author Terrdi
- * @description
+ * @description 基于 Netty 来实现的发送请求类
  * @date 2020/11/3
+ * @see org.geektime.java.client.impl.netty.handler.HttpInBoundHandler
  */
 public class NettyRequestForward<T extends Serializable> implements RequestForward<T> {
     private EventLoopGroup group = new NioEventLoopGroup();

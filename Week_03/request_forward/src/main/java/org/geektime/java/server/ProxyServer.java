@@ -10,8 +10,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.HttpServerExpectContinueHandler;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import org.geektime.java.client.impl.HttpClientRequestForward;
 import org.geektime.java.server.filter.FilterHandler;
 
@@ -20,7 +18,7 @@ import java.io.IOException;
 
 /**
  * @author Terrdi
- * @description
+ * @description 负载均衡启动服务器
  * @date 2020/11/3
  */
 public class ProxyServer implements Closeable {

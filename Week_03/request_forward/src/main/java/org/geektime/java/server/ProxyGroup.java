@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * @author Terrdi
- * @description
+ * @description 负载均衡pojo 与 {@link org.geektime.java.common.Constant#PROXY_XML} 里的 proxy 一一对应
  * @date 2020/11/3
  */
 public class ProxyGroup {

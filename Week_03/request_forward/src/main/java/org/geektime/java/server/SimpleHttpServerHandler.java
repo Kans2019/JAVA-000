@@ -3,21 +3,13 @@ package org.geektime.java.server;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaderValues;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.*;
 
 import java.util.Objects;
 
-import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_LENGTH;
-import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TYPE;
-import static io.netty.handler.codec.http.HttpHeaderValues.TEXT_PLAIN;
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
-
 /**
  * @author Terrdi
- * @description
+ * @description 后端服务器处理请求的逻辑
  * @date 2020/11/4
  */
 public class SimpleHttpServerHandler extends SimpleChannelInboundHandler<HttpRequest> {
@@ -39,11 +31,11 @@ public class SimpleHttpServerHandler extends SimpleChannelInboundHandler<HttpReq
         }
         res = String.format(res, this.port, name);
 
-        FullHttpResponse response = new DefaultFullHttpResponse(request.protocolVersion(), OK,
+        FullHttpResponse response = new DefaultFullHttpResponse(request.protocolVersion(), HttpResponseStatus.OK,
                 Unpooled.wrappedBuffer(res.getBytes()));
         response.headers()
-                .set(CONTENT_TYPE, "text/plain;charset=utf8")
-                .setInt(CONTENT_LENGTH, response.content().readableBytes());
+                .set(HttpHeaderNames.CONTENT_TYPE, "text/plain;charset=utf8")
+                .setInt(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
 
         ctx.writeAndFlush(response);
     }

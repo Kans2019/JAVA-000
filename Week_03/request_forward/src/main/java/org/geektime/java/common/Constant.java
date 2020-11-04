@@ -2,7 +2,7 @@ package org.geektime.java.common;
 
 /**
  * @author Terrdi
- * @description
+ * @description 常量
  * @date 2020/11/3
  */
 public interface Constant {

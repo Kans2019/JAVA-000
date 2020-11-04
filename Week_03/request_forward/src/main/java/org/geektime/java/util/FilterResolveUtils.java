@@ -13,12 +13,12 @@ import java.util.List;
 
 /**
  * @author Terrdi
- * @description
+ * @description 解析 {@link org.geektime.java.common.Constant#FILTER_XML} 的工具类
  * @date 2020/11/4
  */
 public class FilterResolveUtils {
     private FilterResolveUtils() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("工具类无法被初始化");
     }
 
     public static List<HttpRequestFilter> filters;

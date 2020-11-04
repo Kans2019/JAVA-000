@@ -7,7 +7,7 @@ import java.util.Random;
 
 /**
  * @author Terrdi
- * @description
+ * @description 权重代理策略
  * @date 2020/11/3
  */
 public class WeightProxyStrategy implements ProxyStrategy {

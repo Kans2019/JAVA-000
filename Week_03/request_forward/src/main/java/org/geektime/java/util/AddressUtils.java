@@ -6,11 +6,13 @@ import java.util.Arrays;
 
 /**
  * @author Terrdi
- * @description
+ * @description 处理ip地址的工具类
  * @date 2020/10/27
  */
 public class AddressUtils {
-    private AddressUtils() {}
+    private AddressUtils() {
+        throw new UnsupportedOperationException("工具类无法被初始化");
+    }
 
     /**
      * 解析ip地址

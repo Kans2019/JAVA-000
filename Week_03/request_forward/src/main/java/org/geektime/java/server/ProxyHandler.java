@@ -16,7 +16,7 @@ import java.util.Objects;
 
 /**
  * @author Terrdi
- * @description
+ * @description 负载平衡请求处理, 向真实的服务器发送请求并转发回客户端的handler
  * @date 2020/11/3
  */
 public class ProxyHandler extends SimpleChannelInboundHandler<HttpObject> {

@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Terrdi
- * @description
+ * @description 轮询代理策略
  * @date 2020/11/3
  */
 public class RoundRobinProxyStrategy implements ProxyStrategy {
