@@ -34,7 +34,7 @@ public class ProxyHandler extends SimpleChannelInboundHandler<HttpObject> {
             Proxy proxy = resolve(uri);
             if (Objects.isNull(proxy)) {
                 ctx.writeAndFlush(
-                        new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND, Unpooled.wrappedBuffer("Not Found".getBytes())));
+                        new DefaultFullHttpResponse(request.protocolVersion(), HttpResponseStatus.NOT_FOUND, Unpooled.wrappedBuffer("Not Found".getBytes())));
                 return;
             }
             request.headers().set(HttpHeaderNames.HOST, proxy.getHost());
@@ -44,7 +44,6 @@ public class ProxyHandler extends SimpleChannelInboundHandler<HttpObject> {
                 uri = "/" + uri;
             }
             request.setUri(uri);
-            System.out.println(request);
             Request<?> request1 = new Request<>(request);
             Response response = requestForward.sendRequestAndResponse(request1);
             FullHttpResponse result = parse(response);

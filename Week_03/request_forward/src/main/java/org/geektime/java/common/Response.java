@@ -1,5 +1,7 @@
 package org.geektime.java.common;
 
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -47,6 +49,17 @@ public class Response {
         for (Map.Entry<String, List<String>> header : response.headers().toMultimap().entrySet()) {
             map.put(header.getKey(), String.join(",", header.getValue()));
         }
+        this.headers = Collections.unmodifiableMap(map);
+    }
+
+    public Response(DefaultFullHttpResponse httpResponse) {
+        this.statusCode = httpResponse.status().code();
+        this.reasonPhrase = httpResponse.status().reasonPhrase();
+        this.content = httpResponse.content().array();
+        this.protocol = Request.Protocol.resolve(httpResponse.protocolVersion());
+        Map<String, Object> map = new HashMap<>();
+        httpResponse.headers().forEach(entry -> map.put(entry.getKey(), entry.getValue()));
+        httpResponse.trailingHeaders().forEach(entry -> map.put(entry.getKey(), entry.getValue()));
         this.headers = Collections.unmodifiableMap(map);
     }
 

@@ -24,7 +24,7 @@ public class NettyRequestForward<T extends Serializable> implements RequestForwa
     private EventLoopGroup group = new NioEventLoopGroup();
 
     @Override
-    public byte[] sendRequest(Request<T> request) {
+    public Response sendRequestAndResponse(Request<T> request) {
         HttpInBoundHandler<T> httpInBoundHandler = new HttpInBoundHandler<>(request);
         Channel future = resolve(request, httpInBoundHandler);
         ChannelPromise promise = httpInBoundHandler.sendMessage();
@@ -32,16 +32,11 @@ public class NettyRequestForward<T extends Serializable> implements RequestForwa
             promise.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return new byte[0];
+            return null;
         } finally {
             future.close();
         }
-        return httpInBoundHandler.getResponse();
-    }
-
-    @Override
-    public Response sendRequestAndResponse(Request request) {
-        throw new UnsupportedOperationException();
+        return new Response(httpInBoundHandler.getResponse());
     }
 
     private <T extends Serializable> Channel resolve(final Request<T> request, final HttpInBoundHandler<T> httpInBoundHandler) {

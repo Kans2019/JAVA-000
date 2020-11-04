@@ -42,7 +42,7 @@ public class SimpleHttpServer extends Thread {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
+//                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer() {
                         @Override
                         protected void initChannel(Channel ch) throws Exception {

@@ -21,13 +21,13 @@ import java.util.Objects;
 public class HttpInBoundHandler<T extends Serializable> extends ChannelInboundHandlerAdapter {
     private final Request<T> request;
 
-    private byte[] response;
+    private byte[] content;
+
+    private DefaultFullHttpResponse response;
 
     private ChannelPromise promise;
 
     private ChannelHandlerContext ctx;
-
-    private int readBytes = 0;
 
     public HttpInBoundHandler(Request<T> request) {
         this.request = request;
@@ -53,62 +53,50 @@ public class HttpInBoundHandler<T extends Serializable> extends ChannelInboundHa
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-//        if (msg instanceof FullHttpRequest) {
-//            FullHttpRequest fullHttpRequest = (FullHttpRequest) msg;
-//            for (Map.Entry<String, String> header : request.getHeaders().entrySet()) {
-//                fullHttpRequest.headers().add(header.getKey(), header.getValue());
-//            }
-//            fullHttpRequest.setMethod(HttpMethod.valueOf(request.getMethod().getMethod()));
-//            fullHttpRequest.setProtocolVersion(HttpVersion.valueOf(request.getProtocol().toString()));
-//            fullHttpRequest.setUri(request.getUri());
-//        } else {
-//            super.channelRead(ctx, msg);
-//        }
-
-
         if (msg instanceof String) {
-            this.response = ((String) msg).getBytes();
+            this.content = ((String) msg).getBytes();
         } else if (msg instanceof Serializable) {
-            this.response = SerialUtils.serial((Serializable) msg);
+            this.content = SerialUtils.serial((Serializable) msg);
         } else if (msg instanceof DefaultFullHttpResponse) {
-            DefaultFullHttpResponse response = (DefaultFullHttpResponse) msg;
-            this.response = response.content().array();
+            this.response = (DefaultFullHttpResponse) msg;
         } else if (msg instanceof DefaultHttpResponse) {
             DefaultHttpResponse response = (DefaultHttpResponse) msg;
             if (response.decoderResult().isSuccess()) {
-                this.response = new byte[response.headers().getInt(HttpHeaderNames.CONTENT_LENGTH)];
-                this.readBytes = 0;
+                this.content = new byte[response.headers().getInt(HttpHeaderNames.CONTENT_LENGTH)];
+                this.response = new DefaultFullHttpResponse(response.protocolVersion(), response.status(),
+                        Unpooled.buffer(0), response.headers(), response.headers());
             }
         } else if (Objects.nonNull(this.response) && msg instanceof DefaultLastHttpContent) {
             DefaultLastHttpContent httpContent = (DefaultLastHttpContent) msg;
             ByteBuf buf = httpContent.content();
             if (buf.hasArray()) {
-                this.response = buf.array();
+                this.content = buf.array();
             } else {
-                buf.readBytes(this.response);
-//                buf.getBytes(buf.readerIndex(), this.response);
+                buf.readBytes(this.content);
             }
-            promise.setSuccess();
+            ByteBuf byteBuf = Unpooled.buffer(this.content.length);
+            byteBuf.writeBytes(this.content);
+            byteBuf.retain();
+            this.response = new DefaultFullHttpResponse(
+                    this.response.protocolVersion(),
+                    this.response.status(),
+                    byteBuf,
+                    this.response.headers(),
+                    httpContent.trailingHeaders()
+            );
             buf.release();
+            this.promise.setSuccess();
+            ctx.writeAndFlush(this.response);
         } else {
             throw new UnsupportedOperationException("不支持的对象 " + msg);
         }
     }
 
-    public byte[] getResponse() {
-        return response;
+    public byte[] getContent() {
+        return Objects.isNull(this.content) ? this.response.content().array() : this.content;
     }
 
-    private static Map<String, String> proxies = null;
-
-    public static Map<String, String> getProxies() {
-        if (Objects.isNull(proxies)) {
-            synchronized (HttpInBoundHandler.class) {
-                if (Objects.isNull(proxies)) {
-
-                }
-            }
-        }
-        return proxies;
+    public DefaultFullHttpResponse getResponse() {
+        return response;
     }
 }
