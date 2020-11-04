@@ -16,7 +16,7 @@ import static io.netty.handler.codec.http.HttpHeaderValues.TEXT_PLAIN;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 
 /**
- * @author liuhanwei
+ * @author Terrdi
  * @description
  * @date 2020/11/4
  */

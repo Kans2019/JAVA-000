@@ -12,6 +12,6 @@ import org.geektime.java.common.Constant;
 public class NameFilter implements io.github.kimmking.gateway.filter.HttpRequestFilter {
     @Override
     public void filter(FullHttpRequest fullRequest, ChannelHandlerContext ctx) {
-        fullRequest.headers().add(Constant.NAME_HEADER, "Terrdi");
+        fullRequest.headers().add(Constant.NAME_HEADER, System.getProperty("user.name"));
     }
 }
