@@ -4,7 +4,7 @@
         <host weight="20">127.0.0.1:8081</host>
         <host weight="20">127.0.0.1:8082</host>
         <host weight="20">127.0.0.1:8083</host>
-        <host weight="20">127.0.0.1:8084</host>
+        <host weight="70">127.0.0.1:8084</host>
     </proxy>
     <proxy prefix="nio02" strategy="random">
         <host>127.0.0.1:8080</host>

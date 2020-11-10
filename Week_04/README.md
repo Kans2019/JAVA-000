@@ -1,1 +1,13 @@
-学习笔记
+# 作业
+* [使用Thread.join实现同步](./multipy-thread/src/main/java/org/geektime/impl/JoinRun.java)
+* [使用Callable接口实现](./multipy-thread/src/main/java/org/geektime/impl/CallableRun.java)
+* [使用线程池的submit实现同步](./multipy-thread/src/main/java/org/geektime/impl/ExecutorPoolRun.java)
+* [使用Wait&notify实现同步](./multipy-thread/src/main/java/org/geektime/impl/WaitRun.java)
+* [使用Semaphore实现同步](./multipy-thread/src/main/java/org/geektime/impl/SemaphoreRun.java)
+* [使用CyclicBarrier实现同步](./multipy-thread/src/main/java/org/geektime/impl/CyclicBarrierRun.java)
+* [使用CountDownLatch实现同步](./multipy-thread/src/main/java/org/geektime/impl/CountDownLatchRun.java)
+* [使用可重入锁实现同步](./multipy-thread/src/main/java/org/geektime/impl/ReentrantLockRun.java)
+* [使用CompletableFuture#supplyAsync#get实现同步](./multipy-thread/src/main/java/org/geektime/impl/CompletableFutureRun1.java)
+* [使用CompletableFuture#runAsync#join实现同步](./multipy-thread/src/main/java/org/geektime/impl/CompletableFutureRun2.java)
+* [使用CompletableFuture#supplyAsync#get实现同步](./multipy-thread/src/main/java/org/geektime/impl/CompletableFutureRun3.java)
+* [使用CompletableFuture#runAsync#join实现同步](./multipy-thread/src/main/java/org/geektime/impl/CompletableFutureRun4.java)

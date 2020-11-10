@@ -43,7 +43,7 @@ public class ProxyTest {
 
         executors.execute(this.proxyServer::start);
 
-        Thread.sleep(3000);
+        Thread.sleep(1000);
     }
 
     @After
