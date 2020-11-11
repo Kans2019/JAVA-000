@@ -7,7 +7,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author liuhanwei
+ * @author Terrdi
  * @description 使用信号量来完成同步
  * @date 2020/11/10
  * @see Semaphore

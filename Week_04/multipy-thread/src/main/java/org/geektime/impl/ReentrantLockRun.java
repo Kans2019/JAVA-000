@@ -9,7 +9,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @author liuhanwei
+ * @author Terrdi
  * @description 使用可重入锁
  * @date 2020/11/10
  * @see ReentrantLock

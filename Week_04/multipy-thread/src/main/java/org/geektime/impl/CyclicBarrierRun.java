@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Terrdi
- * @description 使用CyclicBarrier来计算
+ * @description 使用CyclicBarrier来实现同步
  * @date 2020/11/10
  * @see CyclicBarrier
  */

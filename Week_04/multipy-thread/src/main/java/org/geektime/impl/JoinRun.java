@@ -6,7 +6,7 @@ import org.geektime.SynchronizedRun;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author liuhanwei
+ * @author Terrdi
  * @description
  * @date 2020/11/10
  * @see Thread#join()
@@ -15,7 +15,7 @@ public class JoinRun implements SynchronizedRun<Integer> {
     /**
      * 同步结果
      */
-    private AtomicInteger value = new AtomicInteger();
+    private final AtomicInteger value = new AtomicInteger();
 
     /**
      * 加上同步 方式 value 被修改

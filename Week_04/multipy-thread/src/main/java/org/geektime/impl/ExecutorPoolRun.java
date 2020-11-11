@@ -1,19 +1,18 @@
 package org.geektime.impl;
 
-import com.sun.xml.internal.bind.v2.runtime.RuntimeUtil;
 import org.geektime.Homework;
 import org.geektime.SynchronizedRun;
-import sun.tools.java.RuntimeConstants;
 
 import java.util.concurrent.*;
 
 /**
- * @author liuhanwei
+ * @author Terrdi
  * @description 线程池执行
  * @date 2020/11/10
+ * @see Future
  */
 public class ExecutorPoolRun implements SynchronizedRun<Integer> {
-    private ExecutorService executorService = new ThreadPoolExecutor(
+    private final ExecutorService executorService = new ThreadPoolExecutor(
             Runtime.getRuntime().availableProcessors(),
             Runtime.getRuntime().availableProcessors() << 1,
             1, TimeUnit.MINUTES,

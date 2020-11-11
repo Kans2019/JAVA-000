@@ -43,6 +43,7 @@ public class Homework {
             new CompletableFutureRun2().print();
             new CompletableFutureRun3().print();
             new CompletableFutureRun4().print();
+            new LockSupportRun().print();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

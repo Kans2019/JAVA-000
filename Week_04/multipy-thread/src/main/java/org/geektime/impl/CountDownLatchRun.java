@@ -8,8 +8,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Terrdi
- * @description
+ * @description CountDownLatch 实现同步
  * @date 2020/11/10
+ * @see CountDownLatch
  */
 public class CountDownLatchRun extends Thread implements SynchronizedRun<Integer> {
     private final CountDownLatch countDownLatch;
