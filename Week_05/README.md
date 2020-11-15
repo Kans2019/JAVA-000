@@ -1,1 +1,12 @@
-学习笔记
+# 作业
+* [使用Cglib实现代理](./spring-base-demo/src/main/java/org/geektime/cglib/CglibProxyBuilder.java)
+* [Spring Bean的装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/Application.java)
+    * [xml装配](./spring-base-demo/src/main/resources/application.xml)
+    * [BeanDefinition装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/ExtBeanDefinitionApplicationContext.java)
+    * [@Configuration装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/User.java)
+    * [@Bean装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/Application.java)
+    * [@Component装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/annotation/UserByComponent.java)
+    * [@Controller装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/annotation/UserByController.java)
+    * [@Repository装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/annotation/UserByRepository.java)
+    * [@Service装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/annotation/UserByService.java)
+* []

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+        xmlns="http://geektime.org/schema/student"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        targetNamespace="http://geektime.org/schema/student"
+        elementFormDefault="qualified">
+    <xsd:import namespace="http://www.springframework.org/schema/beans" schemaLocation="https://www.springframework.org/schema/beans/spring-beans.xsd" />
+    <xsd:element name="student">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element ref="beans:props" minOccurs="0" />
+            </xsd:all>
+            <xsd:attribute name="id" type="xsd:int" />
+            <xsd:attribute name="name" type="xsd:string" />
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

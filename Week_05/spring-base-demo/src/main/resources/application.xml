@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:spring="http://geektime.org/schema/student"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://geektime.org/schema/student http://geektime.org/schema/student.xsd">
+    <!-- 激活注解 -->
+    <context:annotation-config />
+    <context:component-scan base-package="org.geektime.spring" />
+
+    <bean id="logBeanPostProcessor" class="org.geektime.spring.bean.LogBeanPostProcessor" />
+
+    <bean id="userByXML" class="org.geektime.spring.bean.User">
+        <property name="name" value="byXml" />
+    </bean>
+    <spring:student id="1" name="test" />
+</beans>
