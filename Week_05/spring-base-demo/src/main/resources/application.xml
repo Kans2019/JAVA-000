@@ -19,4 +19,12 @@
         <property name="name" value="byXml" />
     </bean>
     <spring:student id="1" name="test" />
+    <spring:school>
+        <spring:students>
+            <spring:student id="20" name="b1" />
+            <spring:student id="20" name="b1" />
+            <spring:student id="20" name="b1" />
+            <spring:student id="20" name="b1" />
+        </spring:students>
+    </spring:school>
 </beans>

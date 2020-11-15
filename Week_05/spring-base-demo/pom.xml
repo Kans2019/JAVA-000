@@ -80,8 +80,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>*.properties</include>
-                    <include>spring.handlers</include>
-                    <include>spring.schemas</include>
+                    <include>META-INF/*</include>
                     <include>*.xml</include>
                     <include>**/*.xsd</include>
                 </includes>
