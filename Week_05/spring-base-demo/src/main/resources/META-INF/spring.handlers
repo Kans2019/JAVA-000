@@ -1,1 +1,1 @@
-http\://geektime.org/schema/student=org.geektime.spring.bean.xml.NameSpaceHandler
+http\://geektime.org/schema/spring=org.geektime.spring.bean.xml.NameSpaceHandler

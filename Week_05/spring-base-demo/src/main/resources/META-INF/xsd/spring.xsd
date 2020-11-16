@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema
-        xmlns="http://geektime.org/schema/student"
+        xmlns="http://geektime.org/schema/spring"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:beans="http://www.springframework.org/schema/beans"
-        targetNamespace="http://geektime.org/schema/student"
+        targetNamespace="http://geektime.org/schema/spring"
         elementFormDefault="qualified">
     <xsd:import namespace="http://www.springframework.org/schema/beans" schemaLocation="https://www.springframework.org/schema/beans/spring-beans.xsd" />
     <xsd:element name="student">
@@ -16,17 +16,30 @@
             <xsd:attribute name="ref" type="xsd:string" />
         </xsd:complexType>
     </xsd:element>
-    <xsd:element name="school">
+    <xsd:element name="class">
         <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element name="students" maxOccurs="unbounded">
+            <xsd:all>
+                <xsd:element ref="beans:props" minOccurs="0" />
+                <xsd:element name="students" maxOccurs="1" minOccurs="0">
                     <xsd:complexType>
                         <xsd:sequence>
                             <xsd:element ref="student" maxOccurs="unbounded" />
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
-            </xsd:sequence>
+            </xsd:all>
+            <xsd:attribute name="id" type="xsd:string" />
+            <xsd:attribute name="ref" type="xsd:string" />
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="school">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element ref="beans:props" minOccurs="0" />
+                <xsd:element ref="class"/>
+                <xsd:element ref="student" />
+            </xsd:all>
+            <xsd:attribute name="id" type="xsd:string" />
         </xsd:complexType>
     </xsd:element>
 </xsd:schema>

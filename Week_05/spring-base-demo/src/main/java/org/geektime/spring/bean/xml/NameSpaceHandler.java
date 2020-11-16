@@ -11,5 +11,7 @@ public class NameSpaceHandler extends NamespaceHandlerSupport {
     @Override
     public void init() {
         registerBeanDefinitionParser("student", new StudentBeanDefinitionParser());
+        registerBeanDefinitionParser("class", new ClassBeanDefinitionParser());
+        registerBeanDefinitionParser("school", new SchoolBeanDefinitionParser());
     }
 }

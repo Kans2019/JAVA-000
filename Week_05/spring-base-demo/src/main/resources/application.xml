@@ -3,12 +3,12 @@
         xmlns="http://www.springframework.org/schema/beans"
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:spring="http://geektime.org/schema/student"
+        xmlns:spring="http://geektime.org/schema/spring"
         xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         https://www.springframework.org/schema/context/spring-context.xsd
-        http://geektime.org/schema/student http://geektime.org/schema/student.xsd">
+        http://geektime.org/schema/spring http://geektime.org/schema/spring.xsd">
     <!-- 激活注解 -->
     <context:annotation-config />
     <context:component-scan base-package="org.geektime.spring" />
@@ -18,13 +18,23 @@
     <bean id="userByXML" class="org.geektime.spring.bean.User">
         <property name="name" value="byXml" />
     </bean>
+    <spring:student id="20" name="b1" />
+    <spring:student id="30" name="b2" />
+    <spring:student id="40" name="b3" />
+    <spring:student id="50" name="b4" />
     <spring:student id="1" name="test" />
-    <spring:school>
+    <spring:class id="No1">
         <spring:students>
-            <spring:student id="20" name="b1" />
-            <spring:student id="20" name="b1" />
-            <spring:student id="20" name="b1" />
-            <spring:student id="20" name="b1" />
+            <spring:student ref="20" />
+            <spring:student ref="30" />
+            <spring:student ref="40" />
+            <spring:student ref="50" />
+            <spring:student id="60" name="b6" />
         </spring:students>
+    </spring:class>
+
+    <spring:school id="school">
+        <spring:class ref="No1" />
+        <spring:student ref="1" />
     </spring:school>
 </beans>

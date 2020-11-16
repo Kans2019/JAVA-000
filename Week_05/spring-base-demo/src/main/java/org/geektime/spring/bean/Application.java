@@ -1,5 +1,6 @@
 package org.geektime.spring.bean;
 
+import io.kimmking.spring01.Student;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -34,5 +35,10 @@ public class Application {
     @Bean
     public User userByBean() {
         return new User();
+    }
+
+    @Bean
+    public Student student100() {
+        return new Student();
     }
 }
