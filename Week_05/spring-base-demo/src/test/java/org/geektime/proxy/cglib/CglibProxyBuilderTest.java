@@ -1,9 +1,7 @@
-package org.geektime.cglib;
+package org.geektime.proxy.cglib;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class CglibProxyBuilderTest {
     private static final Logger logger = Logger.getLogger(CglibProxyBuilderTest.class);

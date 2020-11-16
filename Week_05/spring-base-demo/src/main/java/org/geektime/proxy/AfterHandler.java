@@ -1,4 +1,4 @@
-package org.geektime.cglib;
+package org.geektime.proxy;
 
 import java.lang.reflect.Method;
 

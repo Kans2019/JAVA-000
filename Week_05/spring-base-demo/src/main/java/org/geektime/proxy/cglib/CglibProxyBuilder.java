@@ -1,7 +1,10 @@
-package org.geektime.cglib;
+package org.geektime.proxy.cglib;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodProxy;
+import org.geektime.proxy.AfterHandler;
+import org.geektime.proxy.BeforeHandler;
+import org.geektime.proxy.ProxyBuilder;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -13,7 +16,7 @@ import java.util.*;
  * @since 1.8
  * @see net.sf.cglib.proxy.MethodInterceptor
  **/
-public class CglibProxyBuilder<T> implements net.sf.cglib.proxy.MethodInterceptor {
+public class CglibProxyBuilder<T> implements net.sf.cglib.proxy.MethodInterceptor, ProxyBuilder<T> {
     private final Enhancer enhancer = new Enhancer();
 
     public CglibProxyBuilder(T target) {
@@ -38,21 +41,13 @@ public class CglibProxyBuilder<T> implements net.sf.cglib.proxy.MethodIntercepto
 
     private List<AfterHandler<T>> afterHandlers = new LinkedList<>();
 
-    /**
-     * 在最前面注册前置方法
-     * @param beforeHandler 前置方法调用
-     * @return
-     */
+    @Override
     public CglibProxyBuilder<T> registerBeforeHandler(BeforeHandler<T> beforeHandler) {
         this.beforeHandlers.add(Objects.requireNonNull(beforeHandler, "不允许不存在的方法"));
         return this;
     }
 
-    /**
-     * 在最后面注册后置方法
-     * @param afterHandler 后置方法调用
-     * @return
-     */
+    @Override
     public CglibProxyBuilder<T> registerAfterHandler(AfterHandler<T> afterHandler) {
         this.afterHandlers.add(Objects.requireNonNull(afterHandler, "不允许不存在的方法"));
         return this;
