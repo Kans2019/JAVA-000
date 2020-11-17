@@ -12,3 +12,4 @@
 * [ByteBuddy实现代理](./spring-base-demo/src/main/java/org/geektime/proxy/bytebuddy/ByteBuddyProxyBuilder.java)
     * [进行拦截的类](./spring-base-demo/src/main/java/org/geektime/proxy/bytebuddy/InvokeInterceptor.java)
 * [ByteBuddy配合Agent实现Aop](./spring-base-demo/src/main/java/org/geektime/proxy/bytebuddy/agent/ByteBuddyAgentAop.java)
+    * [MENIFEST.MF](./spring-base-demo/src/main/resources/META-INF/MANIFEST.MF)

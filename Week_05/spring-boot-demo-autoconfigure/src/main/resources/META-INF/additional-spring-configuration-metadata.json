@@ -1,0 +1,63 @@
+{
+    "group": [
+        {
+            "name": "geektime",
+            "type": "org.geektime.GeektimeAutoConfiguration"
+        },
+        {
+            "name": "student",
+            "type": "io.kimmking.spring01.Student"
+        },
+        {
+            "name": "klass",
+            "type": "io.kimmking.spring02.Klass"
+        },
+        {
+            "name": "school",
+            "type": "io.kimmking.spring01.School"
+        }
+    ],
+    "properties": [
+        {
+            "name": "geektime.student",
+            "type": "io.kimmking.spring01.Student",
+            "sourceType": "org.geektime.AutoConfiguration"
+        },
+        {
+            "name": "geektime.klass",
+            "type": "io.kimmking.spring02.Klass",
+            "sourceType": "org.geektime.AutoConfiguration"
+        },
+        {
+            "name": "geektime.school",
+            "type": "io.kimmking.spring01.School",
+            "sourceType": "org.geektime.AutoConfiguration"
+        },
+        {
+            "name": "geektime.student.id",
+            "type": "java.lang.Integer",
+            "sourceType": "io.kimmking.spring01.Student"
+        },
+        {
+            "name": "geektime.student.name",
+            "type": "java.lang.String",
+            "sourceType": "io.kimmking.spring01.Student"
+        },
+        {
+            "name": "geektime.klass.students",
+            "type": "java.util.List",
+            "sourceType": "io.kimmking.spring02.Klass"
+        },
+        {
+            "name": "geektime.school.student",
+            "type": "io.kimmking.spring01.Student",
+            "sourceType": "io.kimmking.spring02.School"
+        },
+        {
+            "name": "geektime.school.klass",
+            "type": "io.kimmking.spring01.Klass",
+            "sourceType": "io.kimmking.spring02.Klass"
+        }
+    ],
+    "hints": []
+}
