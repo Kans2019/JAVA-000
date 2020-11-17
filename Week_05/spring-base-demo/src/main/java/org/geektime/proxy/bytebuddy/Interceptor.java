@@ -1,19 +1,13 @@
 package org.geektime.proxy.bytebuddy;
 
-import net.bytebuddy.asm.Advice;
-import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import org.geektime.proxy.AfterHandler;
 import org.geektime.proxy.BeforeHandler;
 
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 对{@link ByteBuddyProxyBuilder}的代理对象进行Aop拦截的类
+ * 定义对各个类进行拦截的方法
  * @author <a href="mailto:675464934@qq.com">Terrdi</a>
  * @date 2020/11/16
  * @since 1.8
@@ -22,12 +16,12 @@ public class Interceptor<T> {
     /**
      * 前置处理器集合
      */
-    private LinkedList<BeforeHandler<T>> beforeHandlers = new LinkedList<>();
+    private final LinkedList<BeforeHandler<T>> beforeHandlers = new LinkedList<>();
 
     /**
      * 后置处理器集合
      */
-    private LinkedList<AfterHandler<T>> afterHandlers = new LinkedList<>();
+    private final LinkedList<AfterHandler<T>> afterHandlers = new LinkedList<>();
 
     public List<BeforeHandler<T>> getBeforeHandlers() {
         return Collections.unmodifiableList(beforeHandlers);
@@ -57,5 +51,15 @@ public class Interceptor<T> {
 
     private final static Map<Class<?>, Interceptor<?>> map = new ConcurrentHashMap<>();
 
-    
+    /**
+     * 获取指定类的拦截器
+     * @param clazz
+     * @return
+     */
+    public static Interceptor<?> getInstance(Class<?> clazz) {
+        if (!map.containsKey(clazz)) {
+            map.put(clazz, new Interceptor<>());
+        }
+        return map.get(clazz);
+    }
 }
