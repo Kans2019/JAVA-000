@@ -1,6 +1,6 @@
 geektime:
   school:
-    klass1:
+    class1:
       students:
         - id: 1
           name: Java

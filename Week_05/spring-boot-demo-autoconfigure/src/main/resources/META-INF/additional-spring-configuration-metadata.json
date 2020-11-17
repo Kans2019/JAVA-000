@@ -20,28 +20,25 @@
     "properties": [
         {
             "name": "geektime.student",
-            "type": "io.kimmking.spring01.Student",
-            "sourceType": "org.geektime.AutoConfiguration"
+            "type": "io.kimmking.spring01.Student"
         },
         {
             "name": "geektime.klass",
-            "type": "io.kimmking.spring02.Klass",
-            "sourceType": "org.geektime.AutoConfiguration"
+            "type": "io.kimmking.spring02.Klass"
         },
         {
             "name": "geektime.school",
-            "type": "io.kimmking.spring01.School",
-            "sourceType": "org.geektime.AutoConfiguration"
+            "type": "io.kimmking.spring02.School"
         },
         {
             "name": "geektime.student.id",
             "type": "java.lang.Integer",
-            "sourceType": "io.kimmking.spring01.Student"
+            "description": "学生的标识."
         },
         {
             "name": "geektime.student.name",
             "type": "java.lang.String",
-            "sourceType": "io.kimmking.spring01.Student"
+            "description": "学生的名称."
         },
         {
             "name": "geektime.klass.students",
@@ -50,13 +47,11 @@
         },
         {
             "name": "geektime.school.student",
-            "type": "io.kimmking.spring01.Student",
-            "sourceType": "io.kimmking.spring02.School"
+            "type": "io.kimmking.spring01.Student"
         },
         {
             "name": "geektime.school.klass",
-            "type": "io.kimmking.spring01.Klass",
-            "sourceType": "io.kimmking.spring02.Klass"
+            "type": "io.kimmking.spring02.Klass"
         }
     ],
     "hints": []

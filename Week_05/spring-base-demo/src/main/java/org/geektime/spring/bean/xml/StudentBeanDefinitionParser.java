@@ -1,21 +1,9 @@
 package org.geektime.spring.bean.xml;
 
 import io.kimmking.spring01.Student;
-import io.kimmking.spring02.Klass;
-import io.kimmking.spring02.School;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
-import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
-import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * {@link io.kimmking.spring01.Student} 的xml处理
