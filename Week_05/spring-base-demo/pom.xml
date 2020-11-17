@@ -7,6 +7,7 @@
     <groupId>org.geektime</groupId>
     <artifactId>spring-base-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -63,6 +64,13 @@
             <artifactId>byte-buddy-agent</artifactId>
             <version>1.10.9</version>
         </dependency>
+
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.12.1.GA</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <!-- Spring 依赖管理 -->
@@ -87,6 +95,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>agent-demo</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -94,7 +103,6 @@
                     <include>*.properties</include>
                     <include>META-INF/*</include>
                     <include>*.xml</include>
-                    <include>**/*.xsd</include>
                 </includes>
             </resource>
         </resources>
@@ -107,6 +115,43 @@
                     <source>${java.version}</source> <!-- 源代码使用的开发版本 -->
                     <target>${java.version}</target> <!-- 需要生成的目标class文件的编译版本 -->
                     <encoding>${maven.compiler.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifestFile>
+                            src/main/resources/META-INF/MANIFEST.MF
+                        </manifestFile>
+                        <manifest>
+                            <addDefaultImplementationEntries/>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>javassist:javassist:jar:</include>
+                            <include>net.bytebuddy:byte-buddy:jar:</include>
+                            <include>net.bytebuddy:byte-buddy-agent:jar:</include>
+                        </includes>
+                    </artifactSet>
                 </configuration>
             </plugin>
         </plugins>
