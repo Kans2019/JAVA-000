@@ -1,5 +1,5 @@
 # 作业
-* [使用Cglib实现代理](./spring-base-demo/src/main/java/org/geektime/cglib/CglibProxyBuilder.java)
+* [使用Cglib实现代理](./spring-base-demo/src/main/java/org/geektime/proxy/cglib/CglibProxyBuilder.java)
 * [Spring Bean的装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/Application.java)
     * [xml装配](./spring-base-demo/src/main/resources/application.xml)
     * [BeanDefinition装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/ExtBeanDefinitionApplicationContext.java)
@@ -9,4 +9,5 @@
     * [@Controller装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/annotation/UserByController.java)
     * [@Repository装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/annotation/UserByRepository.java)
     * [@Service装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/annotation/UserByService.java)
-* []
+* [ByteBuddy实现代理](./spring-base-demo/src/main/java/org/geektime/proxy/bytebuddy/ByteBuddyProxyBuilder.java)
+    * [进行拦截的类](./spring-base-demo/src/main/java/org/geektime/proxy/bytebuddy/InvokeInterceptor.java)

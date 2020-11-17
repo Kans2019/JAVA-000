@@ -19,17 +19,11 @@ public interface InvokeInterceptor {
     static <T> boolean invokeBefore(@Advice.This T target, @Advice.Origin Method method, @Advice.AllArguments Object... argus) throws Throwable {
         boolean flag = true;
         Class<?> clazz = target.getClass();
-        Deque<Class<?>> classes = new LinkedList<>();
-        while (flag && Objects.nonNull(clazz)) {
-            Interceptor<T> interceptor = (Interceptor<T>) Interceptor.getInstance(clazz);
-            Iterator<BeforeHandler<T>> handlerIterator = interceptor.getBeforeHandlers().iterator();
-            while (flag && handlerIterator.hasNext()) {
-                BeforeHandler<T> beforeHandler = handlerIterator.next();
-                flag = beforeHandler.beforeInvoke(target, method, argus);
-            }
-            classes.offerLast(clazz.getSuperclass());
-            Arrays.stream(clazz.getInterfaces()).forEach(classes::offerLast);
-            clazz = classes.pollFirst();
+        Interceptor<T> interceptor = (Interceptor<T>) Interceptor.getInstance(clazz);
+        Iterator<BeforeHandler<T>> handlerIterator = interceptor.getBeforeHandlers().iterator();
+        while (flag && handlerIterator.hasNext()) {
+            BeforeHandler<T> beforeHandler = handlerIterator.next();
+            flag = beforeHandler.beforeInvoke(target, method, argus);
         }
         return flag;
     }
@@ -38,15 +32,9 @@ public interface InvokeInterceptor {
     @Advice.OnMethodExit
     static <T> void invokeAfter(@Advice.This T target, @Advice.Origin Method method, @Advice.AllArguments Object... argus) throws Throwable {
         Class<?> clazz = target.getClass();
-        Deque<Class<?>> classes = new LinkedList<>();
-        while (Objects.nonNull(clazz)) {
-            Interceptor<T> interceptor = (Interceptor<T>) Interceptor.getInstance(clazz);
-            for (AfterHandler<T> afterHandler : interceptor.getAfterHandlers()) {
-                afterHandler.afterInvoke(target, method, argus);
-            }
-            classes.offerLast(clazz.getSuperclass());
-            Arrays.stream(clazz.getInterfaces()).forEach(classes::offerLast);
-            clazz = classes.pollFirst();
+        Interceptor<T> interceptor = (Interceptor<T>) Interceptor.getInstance(clazz);
+        for (AfterHandler<T> afterHandler : interceptor.getAfterHandlers()) {
+            afterHandler.afterInvoke(target, method, argus);
         }
     }
 }

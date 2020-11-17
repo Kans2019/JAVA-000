@@ -17,9 +17,9 @@ import org.geektime.proxy.ProxyBuilder;
  **/
 public class ByteBuddyProxyBuilder<T> implements ProxyBuilder<T> {
     /**
-     * {@link net.bytebuddy.ByteBuddy}的内置构造器
+     * 对指定类进行拦截
      */
-    private final DynamicType.Builder<T> builder;
+    private final Class<T> clazz;
 
     /**
      * 拦截器
@@ -28,18 +28,19 @@ public class ByteBuddyProxyBuilder<T> implements ProxyBuilder<T> {
 
     @SuppressWarnings("unchecked")
     public ByteBuddyProxyBuilder(T target) {
-        this.builder = (DynamicType.Builder<T>) new ByteBuddy()
+        DynamicType.Builder<T> builder = (DynamicType.Builder<T>) new ByteBuddy()
                 .with(new NamingStrategy.SuffixingRandom("suffix"))
-                .subclass(target.getClass());
-        this.interceptor = (Interceptor<T>) Interceptor.getInstance(target.getClass());
+                .subclass(target.getClass())
+                .method(ElementMatchers.isPublic())
+                .intercept(Advice.to(InvokeInterceptor.class));
+        this.clazz = (Class<T>) builder.make().load(this.getClass().getClassLoader()).getLoaded();
+        this.interceptor = (Interceptor<T>) Interceptor.getInstance(this.clazz);
     }
 
     @Override
     public T build() {
         try {
-            return this.builder.method(ElementMatchers.isPublic())
-                    .intercept(Advice.to(InvokeInterceptor.class))
-                    .make().load(this.getClass().getClassLoader()).getLoaded().newInstance();
+            return this.clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new ClassCastException("生成代理对象失败 " + e.getMessage());
         }
