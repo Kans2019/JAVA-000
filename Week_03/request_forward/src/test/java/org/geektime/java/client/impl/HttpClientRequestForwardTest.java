@@ -1,9 +1,15 @@
 package org.geektime.java.client.impl;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.geektime.java.common.Request;
 import org.geektime.java.client.RequestForward;
 import org.junit.Assert;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +33,7 @@ public class HttpClientRequestForwardTest {
 
     private ExecutorService executor = Executors.newFixedThreadPool(16);
 
-    @org.junit.Test
+//    @org.junit.Test
     public void sendRequest8801() throws Throwable {
         Runnable runnable = () -> {
             try {
@@ -46,5 +52,23 @@ public class HttpClientRequestForwardTest {
             Throwable throwable = this.list.get(0);
             throw throwable;
         }
+    }
+
+    @org.junit.Test
+    public void sendLocalhost() throws IOException {
+        HttpGet get = new HttpGet("http://localhost");
+        CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = closeableHttpClient.execute(get);
+        System.out.println(EntityUtils.toString(response.getEntity()));
+        response.close();
+        closeableHttpClient.close();
+    }
+
+    @org.junit.Test
+    public void sendLocalhostMy() throws UnknownHostException {
+        Request<String> request = new Request<String>("localhost",
+                "HTTP");
+        request.setMethod(Request.HttpMethod.GET);
+        System.out.println(new String(requestForward.sendRequest(request)));
     }
 }

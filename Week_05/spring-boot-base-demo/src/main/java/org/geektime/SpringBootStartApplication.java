@@ -3,7 +3,6 @@ package org.geektime;
 import io.kimmking.spring02.School;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,7 +24,6 @@ public class SpringBootStartApplication implements CommandLineRunner, Applicatio
     }
 
     @Autowired
-    @Qualifier("school")
     private School school;
 
     @Override

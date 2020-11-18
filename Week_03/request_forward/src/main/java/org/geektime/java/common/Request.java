@@ -106,8 +106,8 @@ public class Request<T extends Serializable> {
                     throw new RuntimeException(unknownHostException.getMessage(), unknownHostException);
                 }
             }
-        }).getHostAddress());
-        if (this.port >= 0 && this.port <= 65536) {
+        }).getHostName());
+        if (this.port > 0 && this.port <= 65536) {
             sb.append(':').append(this.port);
         }
         if (Objects.nonNull(this.uri) && !this.uri.isEmpty()){
@@ -189,23 +189,23 @@ public class Request<T extends Serializable> {
         /**
          * HTTP 默认为 http1.1
          */
-        HTTP("http", 80, 1, 1),
+        HTTP("HTTP", 80, 1, 1),
         /**
          * HTTP 1.0
          */
-        HTTP_1_0("http", 80, 1, 0),
+        HTTP_1_0("HTTP", 80, 1, 0),
         /**
          * HTTP 1.1
          */
-        HTTP_1_1("http", 80, 1, 1),
+        HTTP_1_1("HTTP", 80, 1, 1),
         /**
          * HTTP 1.1
          */
-        HTTP_2_0("http", 80, 2, 0),
+        HTTP_2_0("HTTP", 80, 2, 0),
         /**
          * HTTPS
          */
-        HTTPS("https", 443, 1, 0);
+        HTTPS("HTTPS", 443, 1, 0);
 
         /**
          * 默认端口

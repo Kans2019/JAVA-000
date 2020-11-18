@@ -1,11 +1,10 @@
 package org.geektime.java.client.impl;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.client.methods.*;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -112,8 +111,45 @@ public class HttpClientRequestForward implements RequestForward<Serializable>, C
 
 
     private HttpUriRequest resolve(Request<Serializable> request) {
+        if (Objects.isNull(request)) {
+            return null;
+        }
+        /**
+        HttpUriRequest result = null;
+        switch (request.getMethod()) {
+
+            case GET:
+                result = new HttpGet(request.getUri());
+                break;
+            case HEAD:
+                result = new HttpHead(request.getUri());
+                break;
+            case POST:
+                result = new HttpPost(request.getUri());
+                break;
+
+            default:
+                HttpEntity entity = null;
+                if (Objects.nonNull(request.getData())) {
+                    if (request.getData() instanceof String) {
+                        entity = new StringEntity(String.valueOf(request.getData()),
+                                ContentType.parse(request.getHeaders().getOrDefault(HTTP.CONTENT_TYPE, DEFAULT_CONTENT_TYPE.toString())));
+                    } else {
+                        entity = new SerializableEntity(request.getData());
+                    }
+                }
+
+                BasicHttpEntityEnclosingRequest httpRequest = new BasicHttpEntityEnclosingRequest(request.getMethod().getMethod(), request.getUri(), this.resolve(request.getProtocol()));
+                httpRequest.setEntity(entity);
+                RequestBuilder requestBuilder = RequestBuilder.copy(httpRequest);
+                for (Map.Entry<String, String> header : ((Map<String, String>) request.getHeaders()).entrySet()) {
+                    requestBuilder.addHeader(header.getKey(), header.getValue());
+                }
+                return requestBuilder.build();
+        }
+        **/
         HttpEntity entity = null;
-        if (request != null && Objects.nonNull(request.getData())) {
+        if (Objects.nonNull(request.getData())) {
             if (request.getData() instanceof String) {
                 entity = new StringEntity(String.valueOf(request.getData()),
                         ContentType.parse(request.getHeaders().getOrDefault(HTTP.CONTENT_TYPE, DEFAULT_CONTENT_TYPE.toString())));

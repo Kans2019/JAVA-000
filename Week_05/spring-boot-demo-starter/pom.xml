@@ -8,12 +8,34 @@
     <artifactId>spring-boot-demo-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <spring-boot.version>2.0.9.RELEASE</spring-boot.version>
+    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.geektime</groupId>
-            <artifactId>spring-boot-demo-autoconfigure</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.kimmking</groupId>
+            <artifactId>spring01</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/spring01-1.0.jar</systemPath>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

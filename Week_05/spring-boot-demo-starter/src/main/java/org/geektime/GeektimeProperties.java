@@ -6,10 +6,11 @@ import io.kimmking.spring02.School;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * @author liuhanwei
- * @description
+ * 注入的参数类
+ * @author <a href="mailto:675464934@qq.com">Terrdi</a>
  * @date 2020/11/17
- */
+ * @since 1.8
+ **/
 @ConfigurationProperties(prefix = "geektime")
 public class GeektimeProperties {
     private Student student;
