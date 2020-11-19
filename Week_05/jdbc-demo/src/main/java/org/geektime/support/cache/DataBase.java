@@ -1,4 +1,4 @@
-package org.geektime.support;
+package org.geektime.support.cache;
 
 /**
  * 数据库的抽象

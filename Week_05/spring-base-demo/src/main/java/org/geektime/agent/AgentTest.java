@@ -1,6 +1,6 @@
 package org.geektime.agent;
 
-import org.geektime.support.InvokeTimeAop;
+import org.geektime.support.cache.InvokeTimeAop;
 
 /**
  * javaagent 测试类

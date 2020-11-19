@@ -1,4 +1,4 @@
-package org.geektime.support;
+package org.geektime.support.cache;
 
 import com.google.common.base.Objects;
 

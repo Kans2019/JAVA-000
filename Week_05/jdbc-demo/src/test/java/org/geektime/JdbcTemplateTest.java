@@ -1,11 +1,10 @@
 package org.geektime;
 
 import com.google.common.collect.Lists;
-import org.geektime.enhance.HikariJdbcTemplate;
 import org.geektime.enhance.JdbcTransactionTemplate;
 import org.geektime.pojo.Student;
-import org.geektime.support.DataBase;
-import org.geektime.support.SqlStatement;
+import org.geektime.support.cache.DataBase;
+import org.geektime.support.cache.SqlStatement;
 import org.junit.After;
 import org.junit.Assert;
 

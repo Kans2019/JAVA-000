@@ -2,9 +2,9 @@ package org.geektime.enhance;
 
 import org.apache.log4j.Logger;
 import org.geektime.JdbcTemplate;
-import org.geektime.support.Connection;
-import org.geektime.support.DataBase;
-import org.geektime.support.SqlStatement;
+import org.geektime.support.cache.Connection;
+import org.geektime.support.cache.DataBase;
+import org.geektime.support.cache.SqlStatement;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;

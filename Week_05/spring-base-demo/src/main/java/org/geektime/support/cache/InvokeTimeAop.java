@@ -1,4 +1,4 @@
-package org.geektime.support;
+package org.geektime.support.cache;
 
 import org.apache.log4j.Logger;
 import org.geektime.proxy.AfterHandler;
