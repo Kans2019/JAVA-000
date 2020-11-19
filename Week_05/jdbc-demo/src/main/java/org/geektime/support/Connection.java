@@ -21,7 +21,7 @@ public class Connection implements java.sql.Connection {
     public Connection(DataBase dataBase, String host, int port, String database,
                       String userName, String password) throws ReflectiveOperationException, SQLException {
         Class.forName(dataBase.getDriverClass());
-        this.connection = DriverManager.getConnection(String.format("%s%s:%d/%s", dataBase.getUrlPrefix(), host, port, database),
+        this.connection = DriverManager.getConnection(String.format("%s%s:%d/%s?allowMultiQueries=true&allowPublicKeyRetrieval=true", dataBase.getUrlPrefix(), host, port, database),
                 userName, password);
     }
 

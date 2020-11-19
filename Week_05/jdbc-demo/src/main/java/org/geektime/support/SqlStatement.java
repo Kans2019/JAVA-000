@@ -36,4 +36,12 @@ public final class SqlStatement {
     public int hashCode() {
         return Objects.hashCode(sql, arguments);
     }
+
+    public String getSql() {
+        return sql;
+    }
+
+    public Object[] getArguments() {
+        return arguments;
+    }
 }

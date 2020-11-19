@@ -1,9 +1,11 @@
 package org.geektime;
 
+import com.mysql.cj.jdbc.ClientPreparedStatement;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.geektime.support.Connection;
 import org.geektime.support.DataBase;
+import org.geektime.support.SqlStatement;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -29,10 +32,12 @@ public class JdbcTemplate implements Closeable {
      */
     private final ArrayBlockingQueue<Connection> connectionPool = new ArrayBlockingQueue<>(16);
 
-    private AtomicBoolean isClosed = new AtomicBoolean(false);
+    private final AtomicBoolean isClosed = new AtomicBoolean(false);
 
     public JdbcTemplate(java.sql.Connection connection) {
-        this.connectionPool.add(new Connection(connection));
+        if (Objects.nonNull(connection)) {
+            this.connectionPool.add(new Connection(connection));
+        }
     }
 
     public JdbcTemplate(DataBase dataBase, String host, int port, String database,
@@ -60,7 +65,8 @@ public class JdbcTemplate implements Closeable {
             statement = this.preparedStatement(connection, sql, objects);
             return statement.executeUpdate();
         } catch (IOException | SQLException e) {
-            logger.warn("获取连接失败", e);
+            logger.error("获取连接失败", e);
+            throw new RuntimeException(e.getMessage(), e);
         } finally {
             try {
                 if (Objects.nonNull(statement)) statement.close();
@@ -69,7 +75,89 @@ public class JdbcTemplate implements Closeable {
             }
             this.releaseConnection(connection);
         }
-        return 0;
+    }
+
+    /**
+     * 对sql语句批量执行进行封装
+     * 没有做事务封装
+     * 事务封装 {@link org.geektime.enhance.JdbcTransactionTemplate}
+     * @param sqlStatements 需要执行的sql语句及其列表
+     * @return 影响的行数
+     */
+    public int executeBatchUpdate(SqlStatement... sqlStatements) {
+        int result = 0;
+        if (Objects.isNull(sqlStatements) || sqlStatements.length == 0) {
+            return result;
+        }
+        Statement statement = null;
+        Connection connection = null;
+        try {
+            connection = this.getConnection();
+            statement = connection.createStatement();
+            for (SqlStatement sqlStatement : sqlStatements) {
+                statement.addBatch(this.parseSql(connection, sqlStatement));
+            }
+            result = Arrays.stream(statement.executeBatch()).sum();
+            return result;
+        } catch (IOException | SQLException e) {
+            if (Objects.nonNull(statement)) {
+                try {
+                    statement.close();
+                } catch (SQLException throwables) {
+                    logger.error("关闭sql语句失败", throwables);
+                }
+            }
+            logger.error("批量更新失败", e);
+            throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            this.releaseConnection(connection);
+        }
+    }
+
+    protected String parseSql(Connection connection, SqlStatement sqlStatement) throws SQLException {
+        StringBuilder sql = new StringBuilder();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement.getSql())) {
+            for (int i = 0;i < sqlStatement.getArguments().length;i++) {
+                Object argu = sqlStatement.getArguments()[i];
+                if (argu.getClass().isArray()) {
+                    Object[] argums = (Object[]) argu;
+                    for (int k = 0; k < argums.length;k++) {
+                        preparedStatement.setObject(k + 1, argums[k]);
+                    }
+                    sql.append(this.parseSql(preparedStatement)).append(';');
+                    preparedStatement.addBatch();
+                } else if (argu instanceof Iterable) {
+                    Iterator iterator = ((Iterable<?>) argu).iterator();
+                    int k = 1;
+                    while (iterator.hasNext()) {
+                        preparedStatement.setObject(k++, iterator.next());
+                    }
+                    preparedStatement.addBatch();
+                    sql.append(this.parseSql(preparedStatement)).append(';');
+                } else {
+                    preparedStatement.setObject(i + 1, argu);
+                }
+            }
+            if (sql.length() == 0) {
+                return this.parseSql(preparedStatement);
+            } else {
+                sql.deleteCharAt(sql.lastIndexOf(";"));
+                return sql.toString();
+            }
+        }
+    }
+
+    /**
+     * 从预处理的 {@link PreparedStatement} 中提取sql
+     * @param preparedStatement
+     * @return
+     */
+    protected String parseSql(PreparedStatement preparedStatement) throws SQLException {
+        if (preparedStatement instanceof ClientPreparedStatement) {
+            return ((ClientPreparedStatement) preparedStatement).asSql();
+        } else {
+            return preparedStatement.toString();
+        }
     }
 
     /**
@@ -101,6 +189,7 @@ public class JdbcTemplate implements Closeable {
             return list;
         } catch (IOException | SQLException e) {
             logger.warn("获取连接失败", e);
+            throw new RuntimeException(e.getMessage(), e);
         } finally {
             try {
                 if (Objects.nonNull(statement)) statement.close();
@@ -109,7 +198,6 @@ public class JdbcTemplate implements Closeable {
             }
             this.releaseConnection(connection);
         }
-        return Collections.emptyList();
     }
 
     public <T> List<T> query(Class<T> clazz, String sql, Object... objects) {
