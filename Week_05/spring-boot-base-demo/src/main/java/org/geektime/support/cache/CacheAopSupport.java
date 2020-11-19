@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.geektime.support.cache.annotation.MyCache;
-import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +31,10 @@ public class CacheAopSupport {
     public Object cacheAround(ProceedingJoinPoint proj) throws Throwable {
         MyCache myCache = null;
         Signature signature = proj.getSignature();
+        Class returnType = null;
         if (signature instanceof MethodSignature) {
             myCache = ((MethodSignature) signature).getMethod().getAnnotation(MyCache.class);
+            returnType = ((MethodSignature) signature).getReturnType();
         }
         if (Objects.isNull(myCache)) {
             myCache = (MyCache) proj.getSignature().getDeclaringType().getDeclaredAnnotation(MyCache.class);
@@ -42,7 +43,7 @@ public class CacheAopSupport {
         if (Objects.nonNull(myCache)) {
             key = this.parseKey(proj);
             try {
-                return cacheStrategy.get(key);
+                return cacheStrategy.get(key, returnType);
             } catch (NoSuchElementException ignore) {
             }
         }

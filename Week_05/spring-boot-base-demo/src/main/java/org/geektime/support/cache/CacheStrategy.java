@@ -35,5 +35,5 @@ public interface CacheStrategy {
      * @return
      * @throws NoSuchElementException 缓存不存在时, 抛出该异常
      */
-    Object get(String key) throws NoSuchElementException;
+    <T> T get(String key, Class<T> clazz) throws NoSuchElementException;
 }

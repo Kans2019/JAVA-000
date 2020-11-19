@@ -47,17 +47,21 @@ public class GuavaCacheStrategy implements CacheStrategy, AutoCloseable {
     }
 
     @Override
-    public Object get(String key) throws NoSuchElementException {
+    @SuppressWarnings("unchecked")
+    public <T> T get(String key, Class<T> clazz) throws NoSuchElementException {
         final Object value;
         try {
             value = this.cache.get(key);
+            if (!clazz.isAssignableFrom(value.getClass())) {
+                throw new NoSuchElementException(key + " not exists.");
+            }
         } catch (ExecutionException | UncheckedExecutionException e) {
             throw new NoSuchElementException(key + " not exists.");
         }
         if (logger.isDebugEnabled()) {
             logger.debug("从缓存中取到 " + key + " ===> " + value);
         }
-        return value;
+        return (T) value;
     }
 
     /**

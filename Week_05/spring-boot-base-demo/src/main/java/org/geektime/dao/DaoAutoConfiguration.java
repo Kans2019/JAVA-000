@@ -29,4 +29,6 @@ public class DaoAutoConfiguration {
                 properties.getProperty("jdbc.username"),
                 properties.getProperty("jdbc.password"));
     }
+
+
 }
