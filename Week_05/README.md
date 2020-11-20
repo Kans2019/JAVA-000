@@ -1,6 +1,7 @@
 # 作业
 * [使用Cglib实现代理](./spring-base-demo/src/main/java/org/geektime/proxy/cglib/CglibProxyBuilder.java)
 * [Spring Bean的装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/Application.java)
+    * [Properties装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/PropertiesResourceBeanFactory.java)
     * [xml装配](./spring-base-demo/src/main/resources/application.xml)
     * [BeanDefinition装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/ExtBeanDefinitionApplicationContext.java)
     * [@Configuration装配](./spring-base-demo/src/main/java/org/geektime/spring/bean/User.java)

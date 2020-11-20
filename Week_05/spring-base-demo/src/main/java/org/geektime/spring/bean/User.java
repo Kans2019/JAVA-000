@@ -1,6 +1,10 @@
 package org.geektime.spring.bean;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -12,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @see org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
  **/
 @Configuration("userByConfiguration")
-public class User {
+public class User implements ApplicationContextAware, BeanPostProcessor {
     private Long id = System.nanoTime();
 
     @Value("byAnnotation")
@@ -42,5 +46,16 @@ public class User {
                 .add("id", id)
                 .add("name", name)
                 .toString();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        System.out.println("Aware 接口生效");
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println("BeanPostProcessor 接口生效");
+        return bean;
     }
 }
