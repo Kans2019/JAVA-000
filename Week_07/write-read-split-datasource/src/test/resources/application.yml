@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: jdbc
+  main:
+    allow-bean-definition-overriding: true
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: info
