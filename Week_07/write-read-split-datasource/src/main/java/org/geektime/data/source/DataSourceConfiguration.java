@@ -1,9 +1,9 @@
 package org.geektime.data.source;
 
+import org.geektime.support.ConditionalOnPropertyExists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -39,7 +39,7 @@ public class DataSourceConfiguration {
 
     @Bean("readDataSourceProperties")
     @ConfigurationProperties("geektime.read")
-    @ConditionalOnProperty(prefix = "geektime", name = "read")
+    @ConditionalOnPropertyExists(name = "geektime.read")
     public List<DataSourceProperties> readDataSourceProperties() {
         return new ArrayList<>();
     }

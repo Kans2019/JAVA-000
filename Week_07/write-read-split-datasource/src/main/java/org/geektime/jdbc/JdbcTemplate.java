@@ -39,7 +39,7 @@ public class JdbcTemplate implements InitializingBean {
     /**
      * 每个数据源读连接池大小
      */
-    private static final int READ_CONNECTION_LENGTH_PER_DATASOURCE = 1 << 4;
+    private static final int READ_CONNECTION_LENGTH_PER_DATASOURCE = 1 << 2;
 
     @Autowired
     @Qualifier("writeDataSource")

@@ -16,6 +16,8 @@ public class JdbcTemplateTest {
     @org.junit.Test
     public void testSelect() {
         String sql = "select id,name from t_java_course where id=?";
-        System.out.println(jdbcTemplate.query(sql, 12700003));
+        System.out.println(jdbcTemplate.query(sql, 1));
+        System.out.println(jdbcTemplate.query(sql, 2));
+        System.out.println(jdbcTemplate.query(sql, 3));
     }
 }
