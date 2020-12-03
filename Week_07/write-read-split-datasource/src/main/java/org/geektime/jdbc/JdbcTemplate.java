@@ -3,11 +3,14 @@ package org.geektime.jdbc;
 
 import com.mysql.cj.jdbc.ClientPreparedStatement;
 import org.apache.commons.beanutils.BeanUtils;
+import org.geektime.common.DataSourceOperation;
+import org.geektime.support.DynamicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -27,31 +30,13 @@ import java.util.concurrent.TimeUnit;
  * @see JdbcTemplate#getWriteConnection()
  * @see JdbcTemplate#getReadConnection()
  **/
+@Profile("jdbc")
 @Component("geektimeJdbcTemplate")
-public class JdbcTemplate implements InitializingBean {
+public class JdbcTemplate {
     private static final Logger logger = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    /**
-     * 写连接池大小
-     */
-    private static final int WRITE_CONNECTION_LENGTH = 1 << 2;
-
-    /**
-     * 每个数据源读连接池大小
-     */
-    private static final int READ_CONNECTION_LENGTH_PER_DATASOURCE = 1 << 2;
-
     @Autowired
-    @Qualifier("writeDataSource")
-    private DataSource writeDataSource;
-
-    @Autowired(required = false)
-    @Qualifier("readDataSources")
-    private List<DataSource> readDataSources;
-
-    private ArrayBlockingQueue<Connection> writeBlockingQueue = new ArrayBlockingQueue<>(WRITE_CONNECTION_LENGTH);
-
-    private ArrayBlockingQueue<Connection> readBlockingQueue;
+    private DynamicDataSource dataSource;
 
     public int executeUpdate(String sql, Object... objects) {
         Connection connection = null;
@@ -187,42 +172,28 @@ public class JdbcTemplate implements InitializingBean {
     }
 
     protected Connection getWriteConnection() throws IOException {
-        Connection connection = this.writeBlockingQueue.poll();
         try {
+            this.dataSource.setCurrentDataSourceId(DataSourceOperation.WRITE);
+            Connection connection = new Connection(this.dataSource.getConnection());
             connection.setAutoCommit(false);
+            return connection;
         } catch (SQLException e) {
             logger.error("关闭自动提交失败", e);
             throw new IOException(e);
         }
-        return connection;
     }
 
     protected Connection getReadConnection() throws IOException {
         try {
-            return Objects.requireNonNull(this.readBlockingQueue, "没有读连接配置").poll(0, TimeUnit.NANOSECONDS);
-        } catch (NullPointerException | InterruptedException e) {
-            logger.warn("获取读连接失败 {}, 获取写连接...", e.getMessage());
-            return this.getWriteConnection();
+            this.dataSource.setCurrentDataSourceId(DataSourceOperation.READ);
+            return new Connection(this.dataSource.getConnection());
+        } catch (SQLException e) {
+            logger.error("关闭自动提交失败", e);
+            throw new IOException(e);
         }
     }
 
     protected void releaseConnection(Connection connection) {
-        if (Objects.isNull(connection)) return;
-        if (connection instanceof MainConnection) {
-            try {
-                if (!connection.getAutoCommit()) {
-                    connection.rollback();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("打开自动提交失败", e);
-            }
-            this.writeBlockingQueue.offer(connection);
-        } else if (connection instanceof FollowConnection) {
-            this.readBlockingQueue.offer(connection);
-        } else {
-            throw new UnsupportedOperationException("不支持的连接类型 " + connection.getClass().getTypeName());
-        }
 
     }
 
@@ -286,40 +257,6 @@ public class JdbcTemplate implements InitializingBean {
         } else {
             String tmpSql = preparedStatement.toString();
             return tmpSql.substring(tmpSql.lastIndexOf(':') + 1);
-        }
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        for (int i = 0; i < WRITE_CONNECTION_LENGTH; i++) {
-            this.writeBlockingQueue.offer(new MainConnection(this.writeDataSource.getConnection()));
-        }
-
-        if (!CollectionUtils.isEmpty(readDataSources)) {
-            this.readBlockingQueue = new ArrayBlockingQueue<>(readDataSources.size() * READ_CONNECTION_LENGTH_PER_DATASOURCE);
-            for (DataSource dataSource : this.readDataSources) {
-                for (int i = 0; i < READ_CONNECTION_LENGTH_PER_DATASOURCE; i++) {
-                    this.readBlockingQueue.offer(new FollowConnection(dataSource.getConnection()));
-                }
-            }
-        }
-    }
-
-    /**
-     * 主连接
-     */
-    final static class MainConnection extends Connection {
-        public MainConnection(java.sql.Connection connection) {
-            super(connection);
-        }
-    }
-
-    /**
-     * 从连接
-     */
-    final static class FollowConnection extends Connection {
-        public FollowConnection(java.sql.Connection connection) {
-            super(connection);
         }
     }
 }

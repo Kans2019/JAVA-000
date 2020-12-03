@@ -288,4 +288,8 @@ public class Connection implements java.sql.Connection {
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return this.connection.isWrapperFor(iface);
     }
+
+    public java.sql.Connection resolveConnection() {
+        return Objects.isNull(this.connection) ? this : this.connection;
+    }
 }
