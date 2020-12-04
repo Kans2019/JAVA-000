@@ -194,7 +194,11 @@ public class JdbcTemplate {
     }
 
     protected void releaseConnection(Connection connection) {
-
+        try {
+            this.dataSource.releaseConnection(connection);
+        } catch (SQLException e) {
+            logger.error("关闭连接失败", e);
+        }
     }
 
     /**

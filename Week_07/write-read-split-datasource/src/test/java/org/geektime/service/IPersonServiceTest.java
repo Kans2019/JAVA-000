@@ -18,7 +18,9 @@ public class IPersonServiceTest {
 
     @Test
     public void testFindById() {
-        Assert.notNull(personService.getById(10000L), "数据库访问错误");
+        for (int i = 0; i < 10; i++) {
+            System.out.println(i + ",  " + personService.getById(10000L));
+        }
     }
 
     @Test

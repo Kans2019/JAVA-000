@@ -16,19 +16,19 @@ import javax.sql.DataSource;
 @Configuration
 public class ProxyStrategyConfiguration {
     @Bean
-    @ConditionalOnProperty(prefix = "geektime.read", name = "strategy", havingValue = "random", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "geektime", name = "strategy", havingValue = "random", matchIfMissing = true)
     public ProxyStrategy<DataSource> randomProxyStrategy() {
         return new RandomProxyStrategy<>();
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "geektime.read", name = "strategy", havingValue = "round-robin")
+    @ConditionalOnProperty(prefix = "geektime", name = "strategy", havingValue = "round-robin")
     public ProxyStrategy<DataSource> roundRobinProxyStrategy() {
         return new RoundRobinProxyStrategy<>();
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "geektime.read", name = "strategy", havingValue = "weight")
+    @ConditionalOnProperty(prefix = "geektime", name = "strategy", havingValue = "weight")
     public ProxyStrategy<WeightDataSource> weightProxyStrategy() {
         return new WeightProxyStrategy<>();
     }

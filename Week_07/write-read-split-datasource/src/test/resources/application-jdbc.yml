@@ -1,5 +1,5 @@
 geektime:
-  strategy: random
+  strategy: weight
   write:
     driver-class-name: com.mysql.jdbc.Driver # mysql的驱动你可以配置别的关系型数据库
     url: jdbc:mysql://localhost:3306/learn?characterEncoding=utf-8 #数据源地址
@@ -10,3 +10,9 @@ geektime:
       url: jdbc:mysql://localhost:3308/learn?characterEncoding=utf-8 #数据源地址
       username: learn # 用户名
       password: learn # 密码
+      weight: 0
+    - driver-class-name: com.mysql.jdbc.Driver # mysql的驱动你可以配置别的关系型数据库
+      url: jdbc:mysql://localhost:3316/learn?characterEncoding=utf-8 #数据源地址
+      username: learn # 用户名
+      password: learn # 密码
+      weight: 1

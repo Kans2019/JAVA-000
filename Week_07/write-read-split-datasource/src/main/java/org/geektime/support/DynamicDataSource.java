@@ -5,6 +5,9 @@ import org.geektime.common.DataSourceOperation;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * @author <a href="mailto:675464934@qq.com">Terrdi</a>
@@ -41,5 +44,17 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             logger.debug("操作数据源 " + dataSource);
         }
         return dataSource;
+    }
+
+    public void releaseConnection(Connection connection) throws SQLException {
+        if (Objects.isNull(connection)) {
+            return;
+        }
+        DataSource dataSource = this.determineTargetDataSource();
+        if (dataSource instanceof HikariDataSource) {
+            ((HikariDataSource) dataSource).evictConnection(connection);
+        } else {
+            connection.close();
+        }
     }
 }

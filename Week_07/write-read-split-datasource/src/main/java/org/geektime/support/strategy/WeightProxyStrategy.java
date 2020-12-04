@@ -24,7 +24,7 @@ public class WeightProxyStrategy<T extends WeightFul> implements ProxyStrategy<T
         } else {
             sum = random.nextInt(sum);
             for (T proxy : collection) {
-                if (proxy.getWeight() >= sum) {
+                if (proxy.getWeight() > sum) {
                     return proxy;
                 }
                 sum -= proxy.getWeight();
