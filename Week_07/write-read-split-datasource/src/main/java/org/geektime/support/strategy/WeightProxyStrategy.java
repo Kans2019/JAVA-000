@@ -1,5 +1,7 @@
 package org.geektime.support.strategy;
 
+import org.geektime.support.WeightDataSource;
+
 import java.util.List;
 import java.util.Random;
 
@@ -8,7 +10,7 @@ import java.util.Random;
  * @description 权重代理策略
  * @date 2020/11/3
  */
-public class WeightProxyStrategy<T extends WeightDataSource> implements ProxyStrategy<T> {
+public class WeightProxyStrategy<T extends WeightFul> implements ProxyStrategy<T> {
     private final Random random = new Random();
 
     @Override

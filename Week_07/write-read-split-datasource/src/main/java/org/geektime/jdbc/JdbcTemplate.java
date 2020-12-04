@@ -173,7 +173,7 @@ public class JdbcTemplate {
 
     protected Connection getWriteConnection() throws IOException {
         try {
-            this.dataSource.setCurrentDataSourceId(DataSourceOperation.WRITE);
+//            this.dataSource.setCurrentDataSourceId(DataSourceOperation.WRITE);
             Connection connection = new Connection(this.dataSource.getConnection());
             connection.setAutoCommit(false);
             return connection;
@@ -185,7 +185,7 @@ public class JdbcTemplate {
 
     protected Connection getReadConnection() throws IOException {
         try {
-            this.dataSource.setCurrentDataSourceId(DataSourceOperation.READ);
+//            this.dataSource.setCurrentDataSourceId(DataSourceOperation.READ);
             return new Connection(this.dataSource.getConnection());
         } catch (SQLException e) {
             logger.error("关闭自动提交失败", e);

@@ -1,7 +1,11 @@
 package org.geektime.support;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.geektime.common.DataSourceOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,4 +18,17 @@ import org.springframework.stereotype.Component;
 public class DynamicDataSourceAop {
     @Pointcut("(execution(public * org.geektime.service..*.*(..)))")
     public void service(){}
+
+    @Autowired
+    private DynamicDataSource dynamicDataSource;
+
+    @Around("service() && @annotation(ReadOnly)")
+    public Object readWriteSplit(ProceedingJoinPoint proj) throws Throwable {
+        dynamicDataSource.setCurrentDataSourceId(DataSourceOperation.READ);
+        try {
+            return proj.proceed();
+        } finally {
+            dynamicDataSource.removeCurrentDataSourceId();
+        }
+    }
 }

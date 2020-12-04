@@ -1,15 +1,16 @@
 package org.geektime.support;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.geektime.common.DataSourceOperation;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
 
 /**
  * @author <a href="mailto:675464934@qq.com">Terrdi</a>
  * @date 2020/12/3
  * @since 1.8
  **/
-@Component
 public class DynamicDataSource extends AbstractRoutingDataSource {
     public static ThreadLocal<DataSourceOperation> currentDataSourceId = ThreadLocal.withInitial(() -> DataSourceOperation.WRITE);
 
@@ -31,5 +32,14 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
      */
     public void removeCurrentDataSourceId() {
         currentDataSourceId.remove();
+    }
+
+    @Override
+    protected DataSource determineTargetDataSource() {
+        DataSource dataSource = super.determineTargetDataSource();
+        if (logger.isDebugEnabled()) {
+            logger.debug("操作数据源 " + dataSource);
+        }
+        return dataSource;
     }
 }

@@ -1,11 +1,16 @@
 package org.geektime.data.source;
 
+import org.geektime.common.DataSourceOperation;
 import org.geektime.support.ConditionalOnPropertyExists;
-import org.geektime.support.strategy.WeightDataSource;
+import org.geektime.support.DynamicDataSource;
+import org.geektime.support.StrategyDataSource;
+import org.geektime.support.WeightDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -16,8 +21,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -55,9 +60,9 @@ public class DataSourceConfiguration {
 
     @Bean("readDataSources")
     @ConditionalOnBean(name = "readDataSourceProperties")
-    @ConditionalOnExpression("'${geektime.read.strategy}'.equals('weight')")
-    public List<DataSource> readWeightDataSources(@Qualifier("readDataSourceProperties") List<DataSourceProperties> read) {
-        List<DataSource> list = readDataSources(read);
+    @ConditionalOnProperty(prefix = "geektime", name = "strategy", havingValue = "weight")
+    public DataSource readWeightDataSources2(@Qualifier("readDataSourceProperties") List<DataSourceProperties> read) {
+        List<DataSource> list = resolveDataSources(read);
         for (int i = 0; i < list.size(); i++) {
             final int index = i;
             list.set(index, new WeightDataSource(list.get(index)) {
@@ -67,13 +72,40 @@ public class DataSourceConfiguration {
                 }
             });
         }
-        return list;
+        return new StrategyDataSource(list);
     }
 
     @Bean("readDataSources")
     @ConditionalOnBean(name = "readDataSourceProperties")
-    @ConditionalOnExpression("not '${geektime.read.strategy}'.equals('weight')")
-    public List<DataSource> readDataSources(@Qualifier("readDataSourceProperties") List<DataSourceProperties> read) {
+    @ConditionalOnExpression("!'${geektime.strategy}'.equals('weight')")
+    public DataSource readDataSources1(@Qualifier("readDataSourceProperties") List<DataSourceProperties> read) {
+        return new StrategyDataSource(resolveDataSources(read));
+    }
+
+    @Bean("dynamicDataSource")
+    @ConditionalOnMissingBean(name = "readDataSources")
+    public DynamicDataSource dynamicDataSource2(@Qualifier("writeDataSource") DataSource writeDataSource) throws SQLException {
+        DynamicDataSource data = new DynamicDataSource();
+        Map<Object, Object> map = new HashMap<>();
+        map.put(DataSourceOperation.WRITE, writeDataSource);
+        data.setTargetDataSources(map);
+        data.setDefaultTargetDataSource(writeDataSource);
+        return data;
+    }
+
+    @Bean("dynamicDataSource")
+    @ConditionalOnBean(name = "readDataSources")
+    public DynamicDataSource dynamicDataSource1(@Qualifier("writeDataSource") DataSource writeDataSource, @Qualifier("readDataSources") DataSource readDataSources) throws SQLException {
+        DynamicDataSource data = new DynamicDataSource();
+        Map<Object, Object> map = new HashMap<>();
+        map.put(DataSourceOperation.WRITE, writeDataSource);
+        map.put(DataSourceOperation.READ, readDataSources);
+        data.setTargetDataSources(map);
+        data.setDefaultTargetDataSource(writeDataSource);
+        return data;
+    }
+
+    private List<DataSource> resolveDataSources(Collection<DataSourceProperties> read) {
         return read.stream().parallel().map(DataSourceProperties::initializeDataSourceBuilder)
                 .map(DataSourceBuilder::build).collect(Collectors.toList());
     }
