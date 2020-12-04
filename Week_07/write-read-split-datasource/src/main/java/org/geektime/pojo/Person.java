@@ -1,6 +1,9 @@
 package org.geektime.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.google.common.base.MoreObjects;
+
+import java.io.Serializable;
 
 /**
  * 用户处理的Person
@@ -8,7 +11,8 @@ import com.google.common.base.MoreObjects;
  * @date 2020/12/4
  * @since 1.8
  **/
-public class Person {
+@TableName("t_java_course")
+public class Person implements Serializable {
     /**
      * id 列
      */

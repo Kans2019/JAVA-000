@@ -1,0 +1,47 @@
+spring:
+  shardingsphere:
+    datasource:
+      names:
+        master,slave01,slave02
+      # 主数据源
+      master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/learn?characterEncoding=utf-8
+        username: learn
+        password: learn
+      # 从数据源
+      slave01:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3308/learn?characterEncoding=utf-8
+        username: learn
+        password: learn
+      # 从数据源
+      slave02:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3316/learn?characterEncoding=utf-8
+        username: learn
+        password: learn
+    rules:
+      replica-query:
+        data-sources:
+          masterslave:
+            # 读写分离配置
+            load-balancer-name: round-robin
+            # 最终的数据源名称
+            name: dataSource
+            # 主库数据源名称
+            primary-data-source-name: master
+            # 从库数据源名称列表，多个逗号分隔
+            replica-data-source-names: slave01,slave02
+        load-balancers:
+          random:
+            type: RANDOM
+          round-robin:
+            type: ROUND_ROBIN
+    props:
+      # 开启SQL显示，默认false
+      sql:
+        show: true

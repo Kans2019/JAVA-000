@@ -1,5 +1,9 @@
 package org.geektime.data.source;
 
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.JdbcType;
 import org.geektime.common.DataSourceOperation;
 import org.geektime.support.ConditionalOnPropertyExists;
 import org.geektime.support.DynamicDataSource;
@@ -53,7 +57,7 @@ public class DataSourceConfiguration {
     }
 
     @Bean("writeDataSource")
-    @Primary
+    @ConditionalOnBean(name = "writeDataSourceProperties")
     public DataSource writeDataSource(@Qualifier("writeDataSourceProperties") DataSourceProperties write) {
         return write.initializeDataSourceBuilder().build();
     }
@@ -82,27 +86,32 @@ public class DataSourceConfiguration {
         return new StrategyDataSource(resolveDataSources(read));
     }
 
+    @Primary
     @Bean("dynamicDataSource")
-    @ConditionalOnMissingBean(name = "readDataSources")
-    public DynamicDataSource dynamicDataSource2(@Qualifier("writeDataSource") DataSource writeDataSource) throws SQLException {
+    public DynamicDataSource dynamicDataSource1(@Autowired @Qualifier("writeDataSource") DataSource writeDataSource,
+                                                @Autowired(required = false) @Qualifier("readDataSources") DataSource readDataSources) throws SQLException {
         DynamicDataSource data = new DynamicDataSource();
         Map<Object, Object> map = new HashMap<>();
         map.put(DataSourceOperation.WRITE, writeDataSource);
+        if (Objects.nonNull(readDataSources)) {
+            map.put(DataSourceOperation.READ, readDataSources);
+        }
         data.setTargetDataSources(map);
         data.setDefaultTargetDataSource(writeDataSource);
         return data;
     }
 
-    @Bean("dynamicDataSource")
-    @ConditionalOnBean(name = "readDataSources")
-    public DynamicDataSource dynamicDataSource1(@Qualifier("writeDataSource") DataSource writeDataSource, @Qualifier("readDataSources") DataSource readDataSources) throws SQLException {
-        DynamicDataSource data = new DynamicDataSource();
-        Map<Object, Object> map = new HashMap<>();
-        map.put(DataSourceOperation.WRITE, writeDataSource);
-        map.put(DataSourceOperation.READ, readDataSources);
-        data.setTargetDataSources(map);
-        data.setDefaultTargetDataSource(writeDataSource);
-        return data;
+    @Bean("sqlSessionFactory")
+    @ConditionalOnBean(name = "dynamicDataSource")
+    public SqlSessionFactory sqlSessionFactory(DynamicDataSource dynamicDataSource) throws Exception {
+        MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
+        sqlSessionFactory.setDataSource(dynamicDataSource);
+        MybatisConfiguration configuration = new MybatisConfiguration();
+        configuration.setJdbcTypeForNull(JdbcType.NULL);
+        configuration.setMapUnderscoreToCamelCase(true);
+        configuration.setCacheEnabled(false);
+        sqlSessionFactory.setConfiguration(configuration);
+        return sqlSessionFactory.getObject();
     }
 
     private List<DataSource> resolveDataSources(Collection<DataSourceProperties> read) {

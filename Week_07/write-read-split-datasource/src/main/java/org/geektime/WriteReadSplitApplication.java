@@ -13,8 +13,8 @@ import org.springframework.context.ApplicationContext;
 public class WriteReadSplitApplication {
     public static void main(String[] args) {
         ApplicationContext applicationContext = SpringApplication.run(WriteReadSplitApplication.class, args);
-        for (String beanName : applicationContext.getBeanDefinitionNames()) {
-            System.out.println(beanName);
-        }
+//        for (String beanName : applicationContext.getBeanDefinitionNames()) {
+//            System.out.println(beanName);
+//        }
     }
 }

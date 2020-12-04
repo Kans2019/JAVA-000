@@ -1,0 +1,9 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.apache.shardingsphere.spring.boot.SpringBootConfiguration
+  datasource:
+    username: learn
+    password: learn
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/learn?characterEncoding=utf-8

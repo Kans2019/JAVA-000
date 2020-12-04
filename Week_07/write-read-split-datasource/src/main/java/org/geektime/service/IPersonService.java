@@ -1,5 +1,6 @@
 package org.geektime.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.geektime.pojo.Person;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @date 2020/12/4
  * @since 1.8
  **/
-public interface IPersonService {
+public interface IPersonService extends IService<Person> {
     /**
      * 根据id 获取 {@link Person}
      * @param id
@@ -23,10 +24,4 @@ public interface IPersonService {
      * @return
      */
     List<Person> listAll();
-
-    /**
-     * 保存一个 {@link Person}
-     * @param person
-     */
-    void save(Person person);
 }
