@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: jdbc
+    active: shardingsphere-jdbc
   main:
     allow-bean-definition-overriding: true
 logging:

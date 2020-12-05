@@ -34,7 +34,7 @@ spring:
         data-sources:
           masterslave:
             # 读写分离配置
-            load-balancer-name: round-robin
+            load-balancer-name: weight
             # 最终的数据源名称
             name: dataSource
             # 主库数据源名称
@@ -46,6 +46,12 @@ spring:
             type: RANDOM
           round-robin:
             type: ROUND_ROBIN
+          weight:
+            type: WEIGHT
+            props:
+              masterslave:
+                slave01: 10
+                slave02: 20
     props:
       # 开启SQL显示，默认false
       sql:

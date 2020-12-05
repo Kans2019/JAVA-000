@@ -10,6 +10,7 @@
 
 ### shardingSphere-jdbc版本(profile:shardingsphere-jdbc)
 * [配置文件](./write-read-split-datasource/src/main/resources/application-shardingsphere-jdbc.yml)
+* [权重负载均衡实现](./write-read-split-datasource/src/main/java/org/geektime/support/WeightReplicaLoadBalanceAlgorithm.java)
 
 ### shardingSphere-proxy 版本(profile:shardingsphere-proxy)
 * [配置文件](./write-read-split-datasource/src/main/resources/application-shardingsphere-proxy.yml)
