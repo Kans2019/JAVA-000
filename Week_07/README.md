@@ -1,8 +1,30 @@
 # 作业
+## 读写分离
+### 自行实现版本(profile:jdbc)
+* [配置文件](./write-read-split-datasource/src/main/resources/application-jdbc.yml)
 * [多数据源配置](./write-read-split-datasource/src/main/java/org/geektime/data/source/DataSourceConfiguration.java)
-    * [读写分离JdbcTemplate](./write-read-split-datasource/src/main/java/org/geektime/jdbc/JdbcTemplate.java)
-    
-    
+* [读写分离JdbcTemplate](./write-read-split-datasource/src/main/java/org/geektime/jdbc/JdbcTemplate.java)
+* [使用AbstractRoutingDataSource实现读写分离](./write-read-split-datasource/src/main/java/org/geektime/support/DynamicDataSource.java)
+* [读写分离Aop](./write-read-split-datasource/src/main/java/org/geektime/support/DynamicDataSourceAop.java)
+* [负载均衡](./write-read-split-datasource/src/main/java/org/geektime/support/strategy)
+
+### shardingSphere-jdbc版本(profile:shardingsphere-jdbc)
+* [配置文件](./write-read-split-datasource/src/main/resources/application-shardingsphere-jdbc.yml)
+
+### shardingSphere-proxy 版本(profile:shardingsphere-proxy)
+* [配置文件](./write-read-split-datasource/src/main/resources/application-shardingsphere-proxy.yml)
+
+## 批量插入100W数据
+```markdown
+* 一次插入100条 hundred-by-step-insert[main] 运行时间 18s.
+* 一次性全部插入 once-insert[main] 运行时间 7s.
+* 一次插入一条 step-by-step-insert[main] 运行时间 581s.
+* 一次插入十条 ten-by-step-insert[main] 运行时间 107s.
+* 一次插入一万条 ten-thousand-by-step-insert[main] 运行时间 7s.
+* 一次插入一千条 thousand-by-step-insert[main] 运行时间 8s.
+```
+**综上所述, 尽可能做批量插入, 减少IO交互可以极大提高效率。**
+
 ## ShardingSphere-Proxy 配置
 * server.yaml
 ```yaml

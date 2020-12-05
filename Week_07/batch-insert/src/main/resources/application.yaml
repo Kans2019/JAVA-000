@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver # mysql的驱动你可以配置别的关系型数据库
+    url: jdbc:mysql://192.168.179.128:3306/learn #数据源地址
+    username: learn # 用户名
+    password: learn # 密码
