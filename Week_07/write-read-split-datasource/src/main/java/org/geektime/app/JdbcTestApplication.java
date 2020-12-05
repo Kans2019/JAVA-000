@@ -1,5 +1,6 @@
 package org.geektime.app;
 
+import org.geektime.pojo.Person;
 import org.geektime.service.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -27,6 +28,22 @@ public class JdbcTestApplication implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         System.out.println(Arrays.toString(env.getActiveProfiles()));
 
+        test(); // 走从库
+
+        Person person = new Person();
+        person.setId(4L);
+        person.setName("温蒂");
+
+        personService.save(person);
+
+        test(); // 走主库
+
+        Thread.sleep(10000); // 10s 主从同步完毕
+
+        test(); // 走从库
+    }
+
+    private void test() {
         for (int i = 0; i < 10; i++) {
             System.out.println(i + ",  " + personService.getById(10000L));
         }

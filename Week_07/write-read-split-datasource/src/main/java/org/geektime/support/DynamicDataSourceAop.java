@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.geektime.common.DataSourceOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/12/3
  * @since 1.8
  **/
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 @Profile("jdbc")
 @Aspect
 @Component
