@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver # mysqlµÄÇı¶¯Äã¿ÉÒÔÅäÖÃ±ğµÄ¹ØÏµĞÍÊı¾İ¿â
-    url: jdbc:mysql://192.168.179.128:3306/learn #Êı¾İÔ´µØÖ·
-    username: learn # ÓÃ»§Ãû
-    password: learn # ÃÜÂë
+    driver-class-name: com.mysql.cj.jdbc.Driver # mysqlçš„é©±åŠ¨ä½ å¯ä»¥é…ç½®åˆ«çš„å…³ç³»å‹æ•°æ®åº“
+    url: jdbc:mysql://192.168.179.128:3306/learn #æ•°æ®æºåœ°å€
+    username: learn # ç”¨æˆ·å
+    password: learn # å¯†ç 
