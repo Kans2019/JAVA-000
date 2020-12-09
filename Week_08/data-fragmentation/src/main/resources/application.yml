@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: shardingsphere-jdbc
+  main:
+    allow-bean-definition-overriding: true
+logging:
+  level:
+    org:
+      springframework:
+        boot: INFO
+      geektime: debug
