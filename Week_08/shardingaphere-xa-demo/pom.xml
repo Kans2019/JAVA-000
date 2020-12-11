@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.geektime</groupId>
-    <artifactId>data-fragmentation</artifactId>
+    <artifactId>shardingaphere-xa-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
@@ -20,7 +20,7 @@
         <druid.version>1.1.14</druid.version>
         <mybatis.plus.version>3.2.0</mybatis.plus.version>
         <shardingsphere.version>5.0.0-RC1-SNAPSHOT</shardingsphere.version>
-<!--        <shardingsphere.version>5.0.0-alpha</shardingsphere.version>-->
+        <!--        <shardingsphere.version>5.0.0-alpha</shardingsphere.version>-->
     </properties>
 
     <dependencies>
@@ -49,11 +49,20 @@
         </dependency>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-transaction-xa-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geektime</groupId>
+            <artifactId>data-fragmentation</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
@@ -74,6 +83,11 @@
             <dependency>
                 <groupId>org.apache.shardingsphere</groupId>
                 <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+                <version>${shardingsphere.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>shardingsphere-transaction-xa-core</artifactId>
                 <version>${shardingsphere.version}</version>
             </dependency>
             <dependency>
@@ -113,5 +127,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
