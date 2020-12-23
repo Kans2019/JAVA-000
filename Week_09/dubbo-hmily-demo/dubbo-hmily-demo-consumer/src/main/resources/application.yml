@@ -1,0 +1,37 @@
+spring:
+  autoconfigure:
+    exclude:
+      - com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
+  application:
+    name: dubbo-hmily-demo-consumer
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: none
+dubbo:
+  scan:
+    base-packages: org.geektime.consumer
+  registry:
+    address: zookeeper://localhost:2181
+  metadata-report:
+    address: zookeeper://localhost:2181
+
+
+org:
+  dromara:
+    hmily :
+      serializer : kryo
+      recoverDelayTime : 30
+      retryMax : 30
+      scheduledDelay : 30
+      scheduledThreadMax :  10
+      repositorySupport : db
+      started: true  #这里 注意 这是事务的发起端需要配置为true
+      hmilyDbConfig :
+        driverClassName  : com.mysql.jdbc.Driver
+        url :  jdbc:mysql://localhost:3306/hmily?useUnicode=true
+        username : root
+        password :

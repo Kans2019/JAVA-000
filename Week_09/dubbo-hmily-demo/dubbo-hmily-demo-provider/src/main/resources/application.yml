@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: dubbo-hmily-demo-provider
+  autoconfigure:
+    exclude:
+      - com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  shardingsphere:
+    datasource:
+      names: ds0,ds1
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/capital_B?characterEncoding=utf-8
+        username: learn
+        password: learn
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/capital_A?characterEncoding=utf-8
+        username: learn
+        password: learn
+    rules:
+      sharding:
+        tables:
+          rmb:
+            actual-data-nodes: ds$->{0..1}.rmb
+            database-strategy:
+              standard:
+                sharding-column: user_name
+                sharding-algorithm-name: database-inline
+          dollar:
+            actual-data-nodes: ds$->{0..1}.dollar
+            database-strategy:
+              standard:
+                sharding-column: user_name
+                sharding-algorithm-name: database-inline
+        sharding-algorithms:
+          database-inline:
+            type: INLINE
+            props:
+              algorithm-expression: ds$->{user_name.hashCode() % 2}
+        key-generators:
+          snowflake:
+            type: SNOWFLAKE
+            props:
+              worker-id: 123
+    props:
+      sql-show: true
+dubbo:
+  application:
+    name: dubbo-hmily-demo-provider
+  scan:
+    base-packages: org.geektime.provider
+  protocol:
+    name: dubbo
+    port: 12345
+  registry:
+    address: zookeeper://localhost:2181
+  metadata-report:
+    address: zookeeper://localhost:2181
