@@ -1,9 +1,9 @@
 spring:
   redis:
-    host: 192.168.11.111
+    host: 127.0.0.1
     port: 6379
     database: 2
-    password: hxzq
+    password:
     lettuce:
       max-active: 10
       max-wait: -1s
@@ -11,6 +11,8 @@ spring:
       min-idle: 0
 
 geektime:
+  price:
+    unit: 5
   lock:
     # 锁超时时间
     timeout: 60000
