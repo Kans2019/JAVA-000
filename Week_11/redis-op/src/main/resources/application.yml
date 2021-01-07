@@ -1,0 +1,19 @@
+spring:
+  redis:
+    host: 192.168.11.111
+    port: 6379
+    database: 2
+    password: hxzq
+    lettuce:
+      max-active: 10
+      max-wait: -1s
+      max-idle: 20
+      min-idle: 0
+
+geektime:
+  lock:
+    # 锁超时时间
+    timeout: 60000
+    block: true
+    # 乐观锁阻塞时间, 单位ms
+    sleep: 200
