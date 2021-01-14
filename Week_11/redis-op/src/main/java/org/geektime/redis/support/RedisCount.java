@@ -16,7 +16,7 @@ import java.util.Optional;
  * @since 1.8
  **/
 public class RedisCount implements InitializingBean, DisposableBean {
-    private final static Logger logger = LoggerFactory.getLogger(RedisCount .class);
+    private final static Logger logger = LoggerFactory.getLogger(RedisCount.class);
 
 
     private final long stock;
