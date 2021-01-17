@@ -1,6 +1,33 @@
 spring:
   activemq:
     host: 127.0.0.1
-    port: 5672
+    port: 60072
     username: system
     password: manager
+  kafka:
+    bootstrap-servers: 127.0.0.1:9090,127.0.0.1:9091,127.0.0.1:9092
+    producer:
+      retries: 0
+      acks: 1
+      batch-size: 63365
+      properties:
+        linger:
+          ms: 0
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      enable-auto-commit: true
+      auto-commit-interval: 1s
+      auto-offset-reset: latest
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        group:
+          id: test
+        session:
+          timeout:
+            ms: 120000
+        request:
+          timeout:
+            ms: 60000
