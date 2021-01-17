@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class Consumer {
     private Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    @KafkaListener
+    @KafkaListener(topics = "test")
     public void onMessage(ConsumerRecord<?, ?> consumerRecord) {
         logger.info("消费到 {} 的消息 {}:{}", consumerRecord.topic(), consumerRecord.key(), consumerRecord.value());
     }

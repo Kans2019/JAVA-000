@@ -1,3 +1,6 @@
+server:
+  port: 8088
+
 spring:
   activemq:
     host: 127.0.0.1
@@ -27,7 +30,7 @@ spring:
           id: test
         session:
           timeout:
-            ms: 120000
+            ms: 60000
         request:
           timeout:
-            ms: 60000
+            ms: 120000
