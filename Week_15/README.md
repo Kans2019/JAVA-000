@@ -1,1 +1,1 @@
-学习笔记
+![秒杀系统](second-kill.png)
